@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6032330052778760018}
   - component: {fileID: 6032330052778760013}
   m_Layer: 0
-  m_Name: arrow
+  m_Name: arrowPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,3 +94,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fdc016e2f2743429e8423c8f81e6e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SPEED: -10

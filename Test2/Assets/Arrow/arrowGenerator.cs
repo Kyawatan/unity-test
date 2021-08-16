@@ -16,6 +16,7 @@ public class arrowGenerator : MonoBehaviour
     void Update()
     {
         this.delta += Time.deltaTime;
+        Debug.Log(Time.deltaTime);
         if(this.delta > this.span)
         {
             this.delta = 0;

@@ -5,6 +5,8 @@ using UnityEngine;
 public class ArrowController : MonoBehaviour
 {
     GameObject player;
+    //const float SPEED = -24f;
+    [SerializeField] private float m_speed = -2.4f;
 
     void Start()
     {
@@ -14,7 +16,7 @@ public class ArrowController : MonoBehaviour
     void Update()
     {
         //等速落下
-        transform.Translate(0, -0.04f, 0);
+        transform.Translate(0, Time.deltaTime * m_speed, 0);
 
         //画面外に出たらオブジェクトを破棄する
         if(transform.position.y < -5.0f)

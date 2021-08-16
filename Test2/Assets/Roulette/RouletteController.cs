@@ -4,25 +4,41 @@ using UnityEngine;
 
 public class RouletteController : MonoBehaviour
 {
-    float rotSpeed = 0; //回転速度 
+    const float MAX_SPEED = 600.0f; //初速
+    const float DECELERATION_SPEED = 0.996f; //減速スピード
+    float m_rotSpeed = 0.0f; //回転速度
+    bool isStop;
 
     void Start()
     {
-
+        isStop = true;
     }
 
     void Update()
     {
-        //マウスが押されたら回転速度を設定する
-        if (Input.GetMouseButtonDown(0))
+        if (isStop == true)
         {
-            this.rotSpeed = 10;
+            //ルーレットを減速させる
+            m_rotSpeed *= DECELERATION_SPEED;
+
+            //マウスが押されたらルーレットを回転させる
+            if (Input.GetMouseButtonDown(0))
+            {
+                m_rotSpeed = Time.deltaTime * MAX_SPEED;
+                isStop = false;
+            }
         }
-
+        else
+        {
+            //マウスが押されたらルーレットを止める
+            if (Input.GetMouseButtonDown(0))
+            {
+                isStop = true;
+            }
+        }
+        
         //回転速度分、ルーレットを回転させる
-        transform.Rotate(0, 0, this.rotSpeed);
-
-        //ルーレットを減速させる
-        this.rotSpeed *= 0.997f;
+        //現在の角度からm_rotSpeed回転させる
+        transform.Rotate(0, 0, m_rotSpeed);
     }
 }
