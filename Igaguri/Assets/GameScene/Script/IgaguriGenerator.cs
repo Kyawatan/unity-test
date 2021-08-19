@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class IgaguriGenerator : MonoBehaviour
 {
-    public GameObject m_igaguriPrefab;
+    public GameObject igaguriPrefab;
 
     void Update()
     {
         //マウスクリックするとイガグリのインスタンス生成
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject igaguri = Instantiate(m_igaguriPrefab) as GameObject;
+            GameObject igaguri = Instantiate(igaguriPrefab) as GameObject;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 worldDir = ray.direction;
 
