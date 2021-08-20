@@ -16,7 +16,8 @@ public class TargetController : MonoBehaviour
         //的をY軸回転させる
         if (isRotate == true)
         {
-
+            //transform.Rotate(new Vector3(0, 1080, 0) * Time.deltaTime);
+            isRotate = false;
         }
     }
 

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class IgaguriController : MonoBehaviour
 {
+    GameObject target;
+
     void Start()
     {
-        //Shoot(new Vector3(0, 300, 1500));
+        target = GameObject.Find("target");
     }
 
     private void Update()
@@ -28,7 +30,7 @@ public class IgaguriController : MonoBehaviour
         //イガグリの動作を停止させる
         GetComponent<Rigidbody>().isKinematic = true;
 
-        //イガグリを的に固定する
-
+        //イガグリを的に固定する（親子関係にする）
+        gameObject.transform.parent = target.gameObject.transform;
     }
 }
