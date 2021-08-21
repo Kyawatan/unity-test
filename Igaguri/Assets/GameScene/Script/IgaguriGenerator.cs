@@ -11,13 +11,14 @@ public class IgaguriGenerator : MonoBehaviour
         //マウスクリックするとイガグリのインスタンス生成
         if (Input.GetMouseButtonDown(0))
         {
+            const float FORCE_RATE = 50f;
             GameObject igaguri = Instantiate(igaguriPrefab) as GameObject;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 worldDir = ray.direction;
 
             //タップした位置に向けてイガグリを飛ばす
             igaguri.GetComponent<IgaguriController>().Shoot(
-                worldDir.normalized * 1500);
+                worldDir.normalized * FORCE_RATE);
         }
     }
 }

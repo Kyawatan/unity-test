@@ -22,13 +22,16 @@ public class IgaguriController : MonoBehaviour
     public void Shoot(Vector3 dir)
     {
         //イガグリに力を加える
-        GetComponent<Rigidbody>().AddForce(dir);
+        GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
         //イガグリの動作を停止させる
         GetComponent<Rigidbody>().isKinematic = true;
+
+        //イガグリの当たり判定を停止
+        GetComponent<Collider>().enabled = false;
 
         //イガグリを的に固定する（親子関係にする）
         gameObject.transform.parent = target.gameObject.transform;
