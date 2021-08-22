@@ -5,11 +5,13 @@ public class TargetController : MonoBehaviour
     private bool isRotate = false;
     private Rigidbody m_rigidbody;
     private Vector3 m_startPosition;    //的の開始位置
+    GameObject m_director;
 
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody>();
         m_startPosition = m_rigidbody.position;
+        m_director = GameObject.Find("GameDirector");
     }
 
     private const float LOOP_W_TIME = 10f;   //1周する時間(s)
@@ -59,5 +61,8 @@ public class TargetController : MonoBehaviour
     {
         //イガグリが当たったら的をY軸回転させる
         if (isRotate == false) isRotate = true;
+
+        //ポイントを加点する
+        m_director.GetComponent<GameDirector>().getPoint();
     }
 }

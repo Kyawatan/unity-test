@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IgaguriGenerator : MonoBehaviour
 {
-    public GameObject igaguriPrefab;
+    public GameObject m_igaguriPrefab;
 
     void Update()
     {
@@ -12,7 +12,7 @@ public class IgaguriGenerator : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             const float FORCE_RATE = 50f;
-            GameObject igaguri = Instantiate(igaguriPrefab) as GameObject;
+            GameObject igaguri = Instantiate(m_igaguriPrefab) as GameObject;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 worldDir = ray.direction;
 

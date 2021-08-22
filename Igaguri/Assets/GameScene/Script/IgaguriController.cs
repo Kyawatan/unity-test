@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class IgaguriController : MonoBehaviour
 {
-    GameObject target;
+    GameObject m_target;
 
     void Start()
     {
-        target = GameObject.Find("target");
+        m_target = GameObject.Find("target");
     }
 
     private void Update()
@@ -34,6 +34,6 @@ public class IgaguriController : MonoBehaviour
         GetComponent<Collider>().enabled = false;
 
         //イガグリを的に固定する（親子関係にする）
-        gameObject.transform.parent = target.gameObject.transform;
+        gameObject.transform.parent = m_target.gameObject.transform;
     }
 }
