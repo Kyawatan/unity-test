@@ -4,29 +4,30 @@ public class TargetController : MonoBehaviour
 {
     private bool isRotate = false;
     private Rigidbody m_rigidbody;
+    private Vector3 m_startPosition;    //的の開始位置
 
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody>();
+        m_startPosition = m_rigidbody.position;
     }
 
-    private const float COS_LOOP_TIME = 5f;   //1周する時間(s)
-    private const float SIN_LOOP_TIME = 10f;
+    private const float COS_LOOP_TIME = 10f;   //1周する時間(s)
+    private const float SIN_LOOP_TIME = 5f;
     private float m_time = 0f;
 
     void Update()
     {
-        const float MOVE_W_RATE = 0.25f;
-        const float MOVE_H_RATE = 0.2f;
-        Vector3 now = m_rigidbody.position;
+        //縦横の移動範囲
+        const float MOVE_W_RATE = 20f;
+        const float MOVE_H_RATE = 8f;
         //LoopTime(s)で一周する
         float cos = Mathf.Cos(m_time * Mathf.PI * 2 / COS_LOOP_TIME);
         float sin = Mathf.Sin(m_time * Mathf.PI * 2 / SIN_LOOP_TIME);
 
         //的を移動させる
-        now += new Vector3(sin * MOVE_W_RATE, cos * MOVE_H_RATE, 0f);
-        //target.position = now; ワープ移動になってフレーム間の当たり判定が消失するためダメ
-        m_rigidbody.MovePosition(now);
+        m_rigidbody.MovePosition(
+            m_startPosition + new Vector3(cos * MOVE_W_RATE, sin * MOVE_H_RATE, 0f));
         m_time += Time.deltaTime;
     }
 
@@ -35,15 +36,14 @@ public class TargetController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //的をY軸回転させる
         if (isRotate == true)
         {
             const float ROTATION_ANGLE = 1800f;
 
+            //的をY軸回転させる
             m_rigidbody.MoveRotation(Quaternion.Euler(
-                transform.eulerAngles + new Vector3(0f, ROTATION_ANGLE * Time.deltaTime, 0f)));
-            
-            m_angleY += ROTATION_ANGLE * Time.deltaTime;
+                transform.eulerAngles + new Vector3(0f, ROTATION_ANGLE * Time.fixedDeltaTime, 0f)));
+            m_angleY += ROTATION_ANGLE * Time.fixedDeltaTime;
 
             //1回転したら回転をリセットする
             if (m_angleY >= 360f)
@@ -52,7 +52,6 @@ public class TargetController : MonoBehaviour
                 transform.eulerAngles = m_startAngle;
                 isRotate = false;
             }
-
         }
     }
 
