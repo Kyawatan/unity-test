@@ -12,8 +12,8 @@ public class TargetController : MonoBehaviour
         m_startPosition = m_rigidbody.position;
     }
 
-    private const float COS_LOOP_TIME = 10f;   //1周する時間(s)
-    private const float SIN_LOOP_TIME = 5f;
+    private const float LOOP_W_TIME = 10f;   //1周する時間(s)
+    private const float LOOP_H_TIME = 5f;
     private float m_time = 0f;
 
     void Update()
@@ -22,12 +22,12 @@ public class TargetController : MonoBehaviour
         const float MOVE_W_RATE = 20f;
         const float MOVE_H_RATE = 8f;
         //LoopTime(s)で一周する
-        float cos = Mathf.Cos(m_time * Mathf.PI * 2 / COS_LOOP_TIME);
-        float sin = Mathf.Sin(m_time * Mathf.PI * 2 / SIN_LOOP_TIME);
+        float xSin = Mathf.Sin(m_time * Mathf.PI * 2 / LOOP_W_TIME);
+        float ySin = Mathf.Sin(m_time * Mathf.PI * 2 / LOOP_H_TIME);
 
         //的を移動させる
         m_rigidbody.MovePosition(
-            m_startPosition + new Vector3(cos * MOVE_W_RATE, sin * MOVE_H_RATE, 0f));
+            m_startPosition + new Vector3(xSin * MOVE_W_RATE, ySin * MOVE_H_RATE, 0f));
         m_time += Time.deltaTime;
     }
 
