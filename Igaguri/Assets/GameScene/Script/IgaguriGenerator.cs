@@ -16,7 +16,7 @@ public class IgaguriGenerator : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 worldDir = ray.direction;
 
-            //タップした位置に向けてイガグリを飛ばす
+            //クリックした位置に向けてイガグリを飛ばす
             igaguri.GetComponent<IgaguriController>().Shoot(
                 worldDir.normalized * FORCE_RATE);
         }
