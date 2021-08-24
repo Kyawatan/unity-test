@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 138344105}
   - component: {fileID: 138344104}
   m_Layer: 5
-  m_Name: Lank1
+  m_Name: Rank1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 245327554}
   - component: {fileID: 245327553}
   m_Layer: 5
-  m_Name: Lank3
+  m_Name: Rank3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -917,7 +917,7 @@ GameObject:
   - component: {fileID: 1418215025}
   - component: {fileID: 1418215024}
   m_Layer: 5
-  m_Name: Lank4
+  m_Name: Rank4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1206,7 +1206,7 @@ GameObject:
   - component: {fileID: 1651906073}
   - component: {fileID: 1651906072}
   m_Layer: 5
-  m_Name: Lank2
+  m_Name: Rank2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1350,7 +1350,7 @@ GameObject:
   - component: {fileID: 1818948497}
   - component: {fileID: 1818948496}
   m_Layer: 5
-  m_Name: Lank0
+  m_Name: Rank0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

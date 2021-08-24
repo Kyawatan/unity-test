@@ -2,16 +2,15 @@
 
 public class TargetController : MonoBehaviour
 {
+    public static bool m_isMove = false;
     private bool m_isRotate = false;
     private Rigidbody m_rigidbody;
     private Vector3 m_startPosition;    //的の開始位置
-    //GameObject m_director;
 
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody>();
         m_startPosition = m_rigidbody.position;
-        //m_director = GameObject.Find("GameDirector");
     }
 
     private const float LOOP_W_TIME = 10f;   //1周する時間(s)
@@ -19,6 +18,38 @@ public class TargetController : MonoBehaviour
     private float m_time = 0f;
 
     void Update()
+    {
+        if (m_isMove)
+        {
+            MoveTarget();
+        }
+        else
+        {
+            m_rigidbody.position = m_startPosition;
+        }
+    }
+
+    private Vector3 m_startAngle = Vector3.zero;
+    private float m_angleY = 0f;
+
+    private void FixedUpdate()
+    {
+        if (m_isRotate)
+        {
+            RotateTarget();
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //イガグリが当たったら的をY軸回転させる
+        if (!m_isRotate) m_isRotate = true;
+
+        //ポイントを加点する
+        GameDirector.ms_instance.getPoint();
+    }
+
+    private void MoveTarget()
     {
         //縦横の移動範囲
         const float MOVE_W_RATE = 20f;
@@ -33,37 +64,21 @@ public class TargetController : MonoBehaviour
         m_time += Time.deltaTime;
     }
 
-    private Vector3 m_startAngle = Vector3.zero;
-    private float m_angleY = 0f;
-
-    private void FixedUpdate()
+    private void RotateTarget()
     {
-        if (m_isRotate == true)
+        const float ROTATION_ANGLE = 1800f;
+
+        //的をY軸回転させる
+        m_rigidbody.MoveRotation(Quaternion.Euler(
+            transform.eulerAngles + new Vector3(0f, ROTATION_ANGLE * Time.fixedDeltaTime, 0f)));
+        m_angleY += ROTATION_ANGLE * Time.fixedDeltaTime;
+
+        //1回転したら回転をリセットする
+        if (m_angleY >= 360f)
         {
-            const float ROTATION_ANGLE = 1800f;
-
-            //的をY軸回転させる
-            m_rigidbody.MoveRotation(Quaternion.Euler(
-                transform.eulerAngles + new Vector3(0f, ROTATION_ANGLE * Time.fixedDeltaTime, 0f)));
-            m_angleY += ROTATION_ANGLE * Time.fixedDeltaTime;
-
-            //1回転したら回転をリセットする
-            if (m_angleY >= 360f)
-            {
-                m_angleY = 0;
-                transform.eulerAngles = m_startAngle;
-                m_isRotate = false;
-            }
+            m_angleY = 0f;
+            transform.eulerAngles = m_startAngle;
+            m_isRotate = false;
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        //イガグリが当たったら的をY軸回転させる
-        if (m_isRotate == false) m_isRotate = true;
-
-        //ポイントを加点する
-        //m_director.GetComponent<GameDirector>().getPoint();
-        GameDirector.ms_instance.getPoint();
     }
 }

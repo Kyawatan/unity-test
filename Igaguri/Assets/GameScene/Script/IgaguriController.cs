@@ -6,7 +6,7 @@ public class IgaguriController : MonoBehaviour
 {
     private void Update()
     {
-        if (transform.position.y < -10.0f)
+        if (transform.position.y < -10.0f || GameDirector.ms_instance.m_nowFlow == GameDirector.GAME_FLOW.Ready)
         {
             Destroy(gameObject);
         }
