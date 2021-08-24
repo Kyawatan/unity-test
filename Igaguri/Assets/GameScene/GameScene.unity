@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 118110641}
   - component: {fileID: 118110643}
   - component: {fileID: 118110642}
+  - component: {fileID: 118110644}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -199,6 +200,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 118110640}
   m_CullTransparentMesh: 0
+--- !u!114 &118110644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118110640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c56b54fd6a4ed2c4cb9302bb8946344c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_titleText: {fileID: 118110642}
 --- !u!1 &138344102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,9 +1078,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_nowFlow: 0
+  m_pointRankings: 
   m_timeText: {fileID: 1367475032}
   m_pointText: {fileID: 1133021227}
-  m_titleText: {fileID: 118110642}
+  m_titleText: {fileID: 118110640}
   m_resultPanel: {fileID: 1617276335}
 --- !u!4 &1609065725
 Transform:
@@ -1174,11 +1189,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4772c6884e85c49af7ed151b9cfbaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_lank0Text: {fileID: 1818948496}
-  m_lank1Text: {fileID: 138344104}
-  m_lank2Text: {fileID: 1651906072}
-  m_lank3Text: {fileID: 245327553}
-  m_lank4Text: {fileID: 1418215024}
+  m_rank0Text: {fileID: 1818948496}
+  m_rank1Text: {fileID: 138344104}
+  m_rank2Text: {fileID: 1651906072}
+  m_rank3Text: {fileID: 245327553}
+  m_rank4Text: {fileID: 1418215024}
 --- !u!1 &1651906070
 GameObject:
   m_ObjectHideFlags: 0
