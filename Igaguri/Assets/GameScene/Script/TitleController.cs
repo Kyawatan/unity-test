@@ -30,11 +30,11 @@ public class TitleController : MonoBehaviour
 
     private Color GetAlphaColor(Color color)
     {
-        const float FLASH_SPEED = 2.5f;
+        const float FLASH_SPEED = 5f;
 
         //透明度を変化させる
         m_time += Time.deltaTime;
-        color.a = Mathf.Abs(Mathf.Cos(m_time * Mathf.PI / FLASH_SPEED));
+        color.a = Mathf.Abs(Mathf.Cos(m_time * Mathf.PI * 2 / FLASH_SPEED));
 
         return color;
     }
