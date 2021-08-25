@@ -6,16 +6,13 @@ public class TargetController : MonoBehaviour
     private bool m_isRotate = false;
     private Rigidbody m_rigidbody;
     private Vector3 m_startPosition;    //的の開始位置
+    private float m_time = 0f;
 
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody>();
         m_startPosition = m_rigidbody.position;
     }
-
-    private const float LOOP_W_TIME = 10f;   //1周する時間(s)
-    private const float LOOP_H_TIME = 5f;
-    private float m_time = 0f;
 
     void Update()
     {
@@ -26,11 +23,9 @@ public class TargetController : MonoBehaviour
         else
         {
             m_rigidbody.position = m_startPosition;
+            m_time = 0f;
         }
     }
-
-    private Vector3 m_startAngle = Vector3.zero;
-    private float m_angleY = 0f;
 
     private void FixedUpdate()
     {
@@ -49,6 +44,9 @@ public class TargetController : MonoBehaviour
         GameDirector.ms_instance.getPoint();
     }
 
+    private const float LOOP_W_TIME = 10f;   //1周する時間(s)
+    private const float LOOP_H_TIME = 5f;
+
     private void MoveTarget()
     {
         //縦横の移動範囲
@@ -63,6 +61,9 @@ public class TargetController : MonoBehaviour
             m_startPosition + new Vector3(xSin * MOVE_W_RATE, ySin * MOVE_H_RATE, 0f));
         m_time += Time.deltaTime;
     }
+
+    private Vector3 m_startAngle = Vector3.zero;
+    private float m_angleY = 0f;
 
     private void RotateTarget()
     {

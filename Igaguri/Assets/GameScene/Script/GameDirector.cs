@@ -15,7 +15,7 @@ public class GameDirector : MonoBehaviour
     [SerializeField] private GameObject m_titleText;
     [SerializeField] private GameObject m_resultPanel;
     private float m_limitTime = LIMIT_TIME;    //制限時間
-    private int m_totalPoint = 0;       //総得点
+    public int m_totalPoint = 0;       //総得点
     
     void Awake()
     {
@@ -52,6 +52,7 @@ public class GameDirector : MonoBehaviour
                 {
                     //制限時間を減少させる
                     m_limitTime -= Time.deltaTime;
+                    m_timeText.text = m_limitTime.ToString("F1");
 
                     //右クリックでタイトル画面に戻る
                     if (Input.GetMouseButtonDown(1))
@@ -72,8 +73,6 @@ public class GameDirector : MonoBehaviour
                     m_nowFlow = GAME_FLOW.Result;
                     Debug.Log("TimeUp");
                 }
-                m_timeText.text = m_limitTime.ToString("F1");
-                m_pointText.text = m_totalPoint.ToString() + " pt";
                 break;
 
             case GAME_FLOW.Result:
@@ -97,6 +96,7 @@ public class GameDirector : MonoBehaviour
     {
         //加点する
         m_totalPoint += 10;
+        m_pointText.text = m_totalPoint.ToString() + " pt";
     }
 
     private void LoadScoreRanking()

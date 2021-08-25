@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ResultController : MonoBehaviour
 {
     const int LANKING_NUM = 5;
+    [SerializeField] private Text m_scoreText = null;
     [SerializeField] private Text m_rank0Text = null;
     [SerializeField] private Text m_rank1Text = null;
     [SerializeField] private Text m_rank2Text = null;
@@ -14,7 +15,9 @@ public class ResultController : MonoBehaviour
 
     public void UpdateScoreRanking(List<int> rankings)
     {
-        string score = rankings[0].ToString();
+        string score = GameDirector.ms_instance.m_totalPoint.ToString();
+        m_scoreText.text = "SCORE :   " + score + " pt";
+        score = rankings[0].ToString();
         m_rank0Text.text = "1 :   " + score + " pt";
         score = rankings[1].ToString();
         m_rank1Text.text = "2 :   " + score + " pt";
