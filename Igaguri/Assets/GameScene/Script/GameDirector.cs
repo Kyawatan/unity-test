@@ -5,17 +5,14 @@ using UnityEngine.UI;
 
 public class GameDirector : MonoBehaviour
 {
-    const int RANKING_NUM = 5;
-    const float LIMIT_TIME = 20f;
-    public static GameDirector ms_instance; //インスタンス化
-    public GAME_FLOW m_nowFlow;
-    public List<int> m_pointRankings = new List<int>();
-    [SerializeField] private Text m_timeText = null;
-    [SerializeField] private Text m_pointText = null;
-    [SerializeField] private GameObject m_titleText;
+    public static GameDirector ms_instance;
+
     [SerializeField] private GameObject m_resultPanel;
-    private float m_limitTime = LIMIT_TIME;    //制限時間
-    public int m_totalPoint = 0;       //総得点
+    [SerializeField] private TimeController m_timeText;
+    [SerializeField] private PointController m_pointText;
+    private const int RANKING_NUM = 5;
+    private GAME_FLOW m_nowFlow;
+    private List<int> m_scoreRankings = new List<int>();
     
     void Awake()
     {
@@ -27,8 +24,9 @@ public class GameDirector : MonoBehaviour
 
     void Start()
     {
-        m_resultPanel.SetActive(false);
-        m_nowFlow = GAME_FLOW.Ready; 
+        //ゲーム開始時はタイトル画面を表示する
+        m_nowFlow = GAME_FLOW.Ready;
+        Debug.Log("Ready");
     }
 
     void Update()
@@ -38,36 +36,24 @@ public class GameDirector : MonoBehaviour
             case GAME_FLOW.Ready:
                 if (Input.GetMouseButtonDown(0))
                 {
-                    m_titleText.SetActive(false);
-                    TargetController.m_isMove = true;
-                    IgaguriGenerator.m_canThrow = true;
-
                     m_nowFlow = GAME_FLOW.Playing;
                     Debug.Log("GameStart");
                 }
                 break;
 
             case GAME_FLOW.Playing:
-                if (m_limitTime > 0)
+                if (m_timeText.GetTime() > 0f)
                 {
-                    //制限時間を減少させる
-                    m_limitTime -= Time.deltaTime;
-                    m_timeText.text = m_limitTime.ToString("F1");
-
-                    //右クリックでタイトル画面に戻る
                     if (Input.GetMouseButtonDown(1))
                     {
-                        TargetController.m_isMove = false;
-                        IgaguriGenerator.m_canThrow = false;
-                        ResetGame();
+                        //ゲームプレイ中は右クリックでタイトル画面に戻る
+                        m_nowFlow = GAME_FLOW.Ready;
+                        Debug.Log("Ready");
                     }
                 }
                 else
                 {
-                    TargetController.m_isMove = false;
-                    IgaguriGenerator.m_canThrow = false;
-
-                    //スコアランキングを更新してセーブする
+                    //ゲームが終了したらスコアランキングを更新してセーブする
                     SaveScoreRanking();
 
                     m_nowFlow = GAME_FLOW.Result;
@@ -82,7 +68,7 @@ public class GameDirector : MonoBehaviour
                     StartCoroutine("ShowResult");
                 }
                 break;
-        } 
+        }
     }
 
     public enum GAME_FLOW
@@ -92,49 +78,37 @@ public class GameDirector : MonoBehaviour
         Result,
     }
 
-    public void getPoint()
-    {
-        //加点する
-        m_totalPoint += 10;
-        m_pointText.text = m_totalPoint.ToString() + " pt";
-    }
-
     private void LoadScoreRanking()
     {
         //スコアランキングのロード
         for (int i = 0; i < RANKING_NUM; i++)
         {
             int score = PlayerPrefs.GetInt("SCORE" + i, 0);
-            m_pointRankings.Add(score);
+            m_scoreRankings.Add(score);
             Debug.Log(i + " : " + score);
         }
     }
 
     private void SaveScoreRanking()
     {
-        //今回のスコアを配列に追加
-        m_pointRankings.Add(m_totalPoint);
+        int score = m_pointText.GetPoint();
 
-        //降順ソートして上位5つのスコアをセーブ
-        m_pointRankings.Sort((a,b)  => b - a);
+        //今回のスコアが既にランキングにあるときはreturn
         for (int i = 0; i < RANKING_NUM; i++)
         {
-            PlayerPrefs.SetInt("SCORE" + i, m_pointRankings[i]);
+            if (score == m_scoreRankings[i]) return;
+        }
+
+        //今回のスコアを配列に追加
+        m_scoreRankings.Add(score);
+        
+        //降順ソートして上位5つのスコアをセーブ
+        m_scoreRankings.Sort((a,b)  => b - a);
+        for (int i = 0; i < RANKING_NUM; i++)
+        {
+            PlayerPrefs.SetInt("SCORE" + i, m_scoreRankings[i]);
         }
         PlayerPrefs.Save();
-    }
-
-    private void ResetGame()
-    {
-        m_titleText.SetActive(true);
-        m_limitTime = LIMIT_TIME;
-        m_totalPoint = 0;
-        m_timeText.text = m_limitTime.ToString("F1");
-        m_pointText.text = m_totalPoint.ToString() + " pt";
-
-        //タイトル画面に戻る
-        m_nowFlow = GAME_FLOW.Ready;
-        Debug.Log("Retry");
     }
 
     IEnumerator ShowResult()
@@ -146,6 +120,17 @@ public class GameDirector : MonoBehaviour
 
         //タイトル画面に戻る
         m_resultPanel.SetActive(false);
-        ResetGame();
+        m_nowFlow = GAME_FLOW.Ready;
+        Debug.Log("Ready");
+    }
+
+    public GAME_FLOW GetNowFlow()
+    {
+        return m_nowFlow;
+    }
+
+    public List<int> GetScoreRankings()
+    {
+        return m_scoreRankings;
     }
 }

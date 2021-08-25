@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e493bb61ec59cbd47919f9317ab4fe23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_igaguriPrefab: {fileID: 1552443923294371181}
 --- !u!1 &7536475363289800618
 GameObject:
   m_ObjectHideFlags: 0

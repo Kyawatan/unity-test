@@ -6,7 +6,7 @@ public class IgaguriController : MonoBehaviour
 {
     private void Update()
     {
-        if (transform.position.y < -10.0f || GameDirector.ms_instance.m_nowFlow == GameDirector.GAME_FLOW.Ready)
+        if (transform.position.y < -10.0f || GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Ready)
         {
             Destroy(gameObject);
         }
@@ -20,13 +20,11 @@ public class IgaguriController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //イガグリの動作を停止させる
-        GetComponent<Rigidbody>().isKinematic = true;
-
-        //イガグリの当たり判定を停止
-        GetComponent<Collider>().enabled = false;
-
-        //イガグリを的に固定する（親子関係にする）
-        gameObject.transform.parent = collision.gameObject.transform;
+        TargetController target = collision.gameObject.GetComponent<TargetController>();
+        if (target != null)
+        {
+            //的で処理させる
+            target.AttachIgaguri(this);
+        }
     }
 }

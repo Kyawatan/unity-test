@@ -2,10 +2,10 @@
 
 public class TargetController : MonoBehaviour
 {
-    public static bool m_isMove = false;
+    [SerializeField] private PointController m_point;
     private bool m_isRotate = false;
     private Rigidbody m_rigidbody;
-    private Vector3 m_startPosition;    //的の開始位置
+    private Vector3 m_startPosition; //的の初期位置
     private float m_time = 0f;
 
     void Start()
@@ -16,14 +16,15 @@ public class TargetController : MonoBehaviour
 
     void Update()
     {
-        if (m_isMove)
+        if (GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Playing)
         {
+            //ゲームプレイ中は的を移動させる
             MoveTarget();
         }
-        else
+
+        if (GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Ready)
         {
-            m_rigidbody.position = m_startPosition;
-            m_time = 0f;
+            if (m_rigidbody.position != m_startPosition) InitTarget(); //初期化       
         }
     }
 
@@ -35,20 +36,11 @@ public class TargetController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        //イガグリが当たったら的をY軸回転させる
-        if (!m_isRotate) m_isRotate = true;
-
-        //ポイントを加点する
-        GameDirector.ms_instance.getPoint();
-    }
-
-    private const float LOOP_W_TIME = 10f;   //1周する時間(s)
-    private const float LOOP_H_TIME = 5f;
-
     private void MoveTarget()
     {
+        //1周する時間(s)
+        const float LOOP_W_TIME = 10f;
+        const float LOOP_H_TIME = 5f;
         //縦横の移動範囲
         const float MOVE_W_RATE = 20f;
         const float MOVE_H_RATE = 8f;
@@ -81,5 +73,30 @@ public class TargetController : MonoBehaviour
             transform.eulerAngles = m_startAngle;
             m_isRotate = false;
         }
+    }
+
+    private void InitTarget()
+    {
+        //的の位置を初期化
+        m_rigidbody.position = m_startPosition;
+        m_time = 0f;
+    }
+
+    public void AttachIgaguri(IgaguriController igaguri)
+    {
+        int point = 10;
+
+        //的をY軸回転
+        m_isRotate = true;
+
+        //スコアを加点
+        m_point.AddPoint(point);
+
+        //イガグリの動作と当たり判定を停止
+        igaguri.GetComponent<Rigidbody>().isKinematic = true;
+        igaguri.GetComponent<Collider>().enabled = false;
+
+        //イガグリを的に固定する（親子関係にする）
+        igaguri.gameObject.transform.parent = gameObject.transform;
     }
 }

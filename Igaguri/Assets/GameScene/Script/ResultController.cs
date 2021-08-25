@@ -13,11 +13,14 @@ public class ResultController : MonoBehaviour
     [SerializeField] private Text m_rank3Text = null;
     [SerializeField] private Text m_rank4Text = null;
 
+    [SerializeField] private PointController m_nowScore;
+
     public void UpdateScoreRanking(List<int> rankings)
     {
-        string score = GameDirector.ms_instance.m_totalPoint.ToString();
-        m_scoreText.text = "SCORE :   " + score + " pt";
-        score = rankings[0].ToString();
+        string nowScore = m_nowScore.GetPoint().ToString();
+        m_scoreText.text = "SCORE :   " + nowScore + " pt";
+
+        string score = rankings[0].ToString();
         m_rank0Text.text = "1 :   " + score + " pt";
         score = rankings[1].ToString();
         m_rank1Text.text = "2 :   " + score + " pt";
@@ -27,10 +30,12 @@ public class ResultController : MonoBehaviour
         m_rank3Text.text = "4 :   " + score + " pt";
         score = rankings[4].ToString();
         m_rank4Text.text = "5 :   " + score + " pt";
+
+        
     }
 
     private void OnEnable()
     {
-        UpdateScoreRanking(GameDirector.ms_instance.m_pointRankings);
+        UpdateScoreRanking(GameDirector.ms_instance.GetScoreRankings());
     }
 }

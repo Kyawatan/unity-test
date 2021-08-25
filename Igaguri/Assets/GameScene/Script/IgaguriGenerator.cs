@@ -5,13 +5,12 @@ using UnityEngine;
 public class IgaguriGenerator : MonoBehaviour
 {
     public GameObject m_igaguriPrefab;
-    public static bool m_canThrow = false;
 
     void Update()
     {
-        //マウスクリックするとイガグリを生成して飛ばす
-        if (m_canThrow && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Playing)
         {
+            //プレイ中にマウスクリックするとイガグリを生成して飛ばす
             ThrowIgaguri();
         }
     }
@@ -24,7 +23,6 @@ public class IgaguriGenerator : MonoBehaviour
         Vector3 worldDir = ray.direction;
 
         //クリックした位置に向けてイガグリを飛ばす
-        igaguri.GetComponent<IgaguriController>().Shoot(
-            worldDir.normalized * FORCE_RATE);
+        igaguri.GetComponent<IgaguriController>().Shoot(worldDir.normalized * FORCE_RATE);
     }
 }
