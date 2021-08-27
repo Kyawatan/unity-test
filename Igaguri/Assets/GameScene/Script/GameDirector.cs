@@ -9,7 +9,7 @@ public class GameDirector : MonoBehaviour
 
     [SerializeField] private GameObject m_resultPanel;
     [SerializeField] private TimeController m_timeText;
-    [SerializeField] private PointController m_pointText;
+    [SerializeField] private ScoreController m_scoreText;
     private const int RANKING_NUM = 5;
     private GAME_FLOW m_nowFlow;
     private List<int> m_scoreRankings = new List<int>();
@@ -91,7 +91,7 @@ public class GameDirector : MonoBehaviour
 
     private void SaveScoreRanking()
     {
-        int score = m_pointText.GetPoint();
+        int score = m_scoreText.GetScore();
 
         //今回のスコアが既にランキングにあるときはreturn
         for (int i = 0; i < RANKING_NUM; i++)

@@ -5,38 +5,36 @@ using UnityEngine.UI;
 
 public class PointController : MonoBehaviour
 {
-    private Text m_pointText = null;
-    private int m_totalPoint = 0;
+    private Text m_text = null;
+    private RectTransform m_rectTr;
+    private float m_startPosY;
+    private int m_point = 0;
+    private float m_time = 0f;
 
-    private void Start()
+    private void Awake()
     {
-        m_pointText = GetComponent<Text>();
+        m_text = GetComponent<Text>();
+        m_rectTr = GetComponent<RectTransform>();
+        m_startPosY = m_rectTr.position.y;
     }
 
-    private void Update()
+    void Update()
     {
-        if (GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Ready)
-        {
-            if (m_totalPoint != 0) InitPoint(); //初期化
-        }
+        //表示を上に移動
+        const float MOVE_RATE = 20f;
+        m_rectTr.position += new Vector3(0f, MOVE_RATE * Time.deltaTime, 0f);
+
+        //1秒後に破棄
+        m_time += Time.deltaTime;
+        if (m_time >= 1f) Destroy(gameObject);
     }
 
-    public void AddPoint(int point)
+    public void SetPoint(int pt)
     {
-        //加点する
-        m_totalPoint += point;
-        m_pointText.text = m_totalPoint.ToString() + " pt";
-    }
+        m_point = pt;
+        m_text.text = "+" + m_point + "pt";
 
-    public void InitPoint()
-    {
-        //スコアを初期化する
-        m_totalPoint = 0;
-        m_pointText.text = m_totalPoint.ToString() + " pt";
-    }
-
-    public int GetPoint()
-    {
-        return m_totalPoint;
+        if (pt == 100) m_text.color = new Color(0.3961f, 0f, 0f, 1);
+        else m_text.color = Color.white;
     }
 }

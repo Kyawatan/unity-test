@@ -2,7 +2,9 @@
 
 public class TargetController : MonoBehaviour
 {
-    [SerializeField] private PointController m_point;
+    public GameObject m_pointPrefab;
+    [SerializeField] private GameObject m_canvas;
+    [SerializeField] private ScoreController m_point;
     [SerializeField] private Transform m_centerTr;
     private bool m_isRotate = false;
     private Rigidbody m_rigidbody;
@@ -20,7 +22,7 @@ public class TargetController : MonoBehaviour
         if (GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Playing)
         {
             //ゲームプレイ中は的を移動させる
-            //MoveTarget();
+            MoveTarget();
         }
 
         if (GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Ready)
@@ -85,10 +87,9 @@ public class TargetController : MonoBehaviour
 
     public void AttachIgaguri(IgaguriController igaguri, Vector3 contact)
     {
-        //ワールド座標からローカル座標へ変換
-        Vector2 contactPos = new Vector2(contact.x, contact.y);
-        Vector2 centerPos = new Vector2(m_centerTr.position.x, m_centerTr.position.y);
-        float distance = (contactPos - centerPos).magnitude;
+        Vector3 localPos = m_centerTr.InverseTransformPoint(contact);
+        Vector2 contactPos = new Vector2(localPos.x, localPos.y);
+        float distance = contactPos.magnitude;
         int point = 0;
 
         if (distance < 0.3f) point = 100;
@@ -97,12 +98,15 @@ public class TargetController : MonoBehaviour
         else if (1.55f <= distance && distance < 2.15f) point = 10;
         else return;
 
-        //スコアを加点
+        Debug.Log(point + "pt");
+
+        //スコアにポイントを加点
         m_point.AddPoint(point);
 
-        Debug.Log(transform);
-        Debug.Log(contactPos + " , " + centerPos);
-        Debug.Log(distance);
+        //加点したポイントを的の上に表示する
+        GameObject pointText = Instantiate(m_pointPrefab) as GameObject;
+        pointText.transform.SetParent(m_canvas.transform, false);
+        pointText.GetComponent<PointController>().SetPoint(point);
 
         //的をY軸回転
         m_isRotate = true;

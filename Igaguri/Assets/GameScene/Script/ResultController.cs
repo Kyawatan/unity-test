@@ -13,25 +13,30 @@ public class ResultController : MonoBehaviour
     [SerializeField] private Text m_rank3Text = null;
     [SerializeField] private Text m_rank4Text = null;
 
-    [SerializeField] private PointController m_nowScore;
+    [SerializeField] private ScoreController m_nowScore;
 
     public void UpdateScoreRanking(List<int> rankings)
     {
-        string nowScore = m_nowScore.GetPoint().ToString();
-        m_scoreText.text = "SCORE :   " + nowScore + " pt";
+        int nowScore = m_nowScore.GetScore();
+        Text[] rankingTexts = {m_rank0Text, m_rank1Text, m_rank2Text, m_rank3Text, m_rank4Text};
 
-        string score = rankings[0].ToString();
-        m_rank0Text.text = "1 :   " + score + " pt";
-        score = rankings[1].ToString();
-        m_rank1Text.text = "2 :   " + score + " pt";
-        score = rankings[2].ToString();
-        m_rank2Text.text = "3 :   " + score + " pt";
-        score = rankings[3].ToString();
-        m_rank3Text.text = "4 :   " + score + " pt";
-        score = rankings[4].ToString();
-        m_rank4Text.text = "5 :   " + score + " pt";
+        //テキストの更新
+        m_scoreText.text = "SCORE :   " + nowScore.ToString() + " pt";
+        for (int i = 0; i < rankingTexts.Length; i++)
+        {
+            string score = rankings[i].ToString();
+            rankingTexts[i].text = i + 1 + " :   " + score + " pt";
+        }
 
-        
+        //今回のスコアがランキングに入っていたら文字の色を変える
+        for(int i = 0; i < rankingTexts.Length; i++)
+        {
+            if(rankings[i] == nowScore)
+            {
+                rankingTexts[i].color = new Color(0.3961f, 0f, 0f, 1);
+                return;
+            }
+        }
     }
 
     private void OnEnable()

@@ -671,7 +671,7 @@ GameObject:
   - component: {fileID: 1133021227}
   - component: {fileID: 1133021229}
   m_Layer: 5
-  m_Name: Point
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -858,6 +858,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cead06bb6517f7842a01950c548e1df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_pointPrefab: {fileID: 5872295863947263144, guid: 807bf162ce75fa540911864ecee44e83,
+    type: 3}
+  m_canvas: {fileID: 228972830}
   m_point: {fileID: 1133021229}
   m_centerTr: {fileID: 1961686094}
 --- !u!1 &1367475030
@@ -1203,7 +1206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_resultPanel: {fileID: 1617276335}
   m_timeText: {fileID: 1367475034}
-  m_pointText: {fileID: 1133021229}
+  m_scoreText: {fileID: 1133021229}
 --- !u!4 &1609065725
 Transform:
   m_ObjectHideFlags: 0
