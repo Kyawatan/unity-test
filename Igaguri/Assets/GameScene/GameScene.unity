@@ -859,6 +859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_point: {fileID: 1133021229}
+  m_centerTr: {fileID: 1961686094}
 --- !u!1 &1367475030
 GameObject:
   m_ObjectHideFlags: 0

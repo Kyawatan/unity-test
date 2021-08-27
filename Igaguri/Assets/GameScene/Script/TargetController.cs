@@ -3,6 +3,7 @@
 public class TargetController : MonoBehaviour
 {
     [SerializeField] private PointController m_point;
+    [SerializeField] private Transform m_centerTr;
     private bool m_isRotate = false;
     private Rigidbody m_rigidbody;
     private Vector3 m_startPosition; //的の初期位置
@@ -19,7 +20,7 @@ public class TargetController : MonoBehaviour
         if (GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Playing)
         {
             //ゲームプレイ中は的を移動させる
-            MoveTarget();
+            //MoveTarget();
         }
 
         if (GameDirector.ms_instance.GetNowFlow() == GameDirector.GAME_FLOW.Ready)
@@ -32,7 +33,7 @@ public class TargetController : MonoBehaviour
     {
         if (m_isRotate)
         {
-            RotateTarget();
+            RotateOnceTarget();
         }
     }
 
@@ -57,7 +58,7 @@ public class TargetController : MonoBehaviour
     private Vector3 m_startAngle = Vector3.zero;
     private float m_angleY = 0f;
 
-    private void RotateTarget()
+    private void RotateOnceTarget()
     {
         const float ROTATION_ANGLE = 1800f;
 
@@ -82,21 +83,35 @@ public class TargetController : MonoBehaviour
         m_time = 0f;
     }
 
-    public void AttachIgaguri(IgaguriController igaguri)
+    public void AttachIgaguri(IgaguriController igaguri, Vector3 contact)
     {
-        int point = 10;
+        //ワールド座標からローカル座標へ変換
+        Vector2 contactPos = new Vector2(contact.x, contact.y);
+        Vector2 centerPos = new Vector2(m_centerTr.position.x, m_centerTr.position.y);
+        float distance = (contactPos - centerPos).magnitude;
+        int point = 0;
 
-        //的をY軸回転
-        m_isRotate = true;
+        if (distance < 0.3f) point = 100;
+        else if (0.3f <= distance && distance < 1f) point = 50;
+        else if (1f <= distance && distance < 1.55f) point = 20;
+        else if (1.55f <= distance && distance < 2.15f) point = 10;
+        else return;
 
         //スコアを加点
         m_point.AddPoint(point);
+
+        Debug.Log(transform);
+        Debug.Log(contactPos + " , " + centerPos);
+        Debug.Log(distance);
+
+        //的をY軸回転
+        m_isRotate = true;
 
         //イガグリの動作と当たり判定を停止
         igaguri.GetComponent<Rigidbody>().isKinematic = true;
         igaguri.GetComponent<Collider>().enabled = false;
 
         //イガグリを的に固定する（親子関係にする）
-        igaguri.gameObject.transform.parent = gameObject.transform;
+        igaguri.transform.parent = m_centerTr;
     }
 }
