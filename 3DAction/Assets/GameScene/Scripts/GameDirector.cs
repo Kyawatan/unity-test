@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class GameDirector : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private CameraController m_cameraController;
+    [SerializeField] private PlayerController m_playerController;
+    [SerializeField] private EnemyMove m_enemyMove;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // プレイヤーの位置情報をカメラと敵に渡す
+        m_cameraController.CameraPosition(m_playerController.GetPlayerPosition());
+        m_enemyMove.MoveToPlayer(m_playerController.GetPlayerPosition());
     }
 }

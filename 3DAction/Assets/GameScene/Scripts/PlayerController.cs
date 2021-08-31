@@ -23,13 +23,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         JumpPlayer();
-        Debug.Log(m_characterController.isGrounded);
 
-        //プレイヤーの方向を変える
+        // プレイヤーの方向を変える
         float playerAngle = Input.GetAxis("Horizontal") * m_rotateSpeed;
         m_transform.eulerAngles += new Vector3(0f, playerAngle * Time.deltaTime, 0f);
 
-        //プレイヤーの前進
+        // プレイヤーの前進
         m_moveVelocity.z = Input.GetAxis("Vertical") * m_moveSpeed;
         m_characterController.Move(m_transform.TransformDirection(m_moveVelocity) * Time.deltaTime);
         //m_transform.position +=  m_transform.forward * m_moveVelocity.z * Time.deltaTime;
@@ -41,7 +40,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetButtonDown("Jump"))
             {
-                // y方向に移動
+                // ジャンプ
                 m_moveVelocity.y = m_jumpPower;
             }
         }
@@ -50,5 +49,10 @@ public class PlayerController : MonoBehaviour
             // 重力による加速
             m_moveVelocity.y += Physics.gravity.y * Time.deltaTime;
         }
+    }
+
+    public Transform GetPlayerPosition()
+    {
+        return m_transform;
     }
 }
