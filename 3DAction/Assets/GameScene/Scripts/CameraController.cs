@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private const float OFFSET_Z = -2f; // プレイヤーの後方
-    private const float OFFSET_Y = 1f; // プレイヤーの上方
+    private const float OFFSET_Z = -4.79f; // プレイヤーの後方
+    private const float OFFSET_Y = 1.01f; // プレイヤーの上方
     private Transform m_transform;
-    private Vector3 m_offset = new Vector3(0f, OFFSET_Y, OFFSET_Z);
+    [SerializeField] private Vector3 m_offset = new Vector3(0f, OFFSET_Y, OFFSET_Z);
+    [SerializeField] private float m_correctPlayerPoint = 1f;
+    [SerializeField] private float m_moveSpeed = 10f;
+    [SerializeField] private float m_rotateSpeed = 10f;
 
     void Start()
     {
@@ -16,16 +19,22 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        
+        // プレイヤーを追いかける
+        MoveToPlayer();
     }
 
-    public void CameraPosition(Transform playerTr)
+    private void MoveToPlayer()
     {
-        // プレイヤーと同じ方向に回転
-        m_transform.eulerAngles = new Vector3(0f, playerTr.eulerAngles.y, 0f);
+        //プレイヤーの位置情報を取得
+        Transform playerTr = GameDirector.GetInstance().GetPlayerTr();
 
-        // プレイヤーの後方に移動
-        //m_transform.position = new Vector3(playerTr.position.x, playerTr.position.y + OFFSET_Y, playerTr.position.z + OFFSET_Z);
-        m_transform.position = playerTr.TransformPoint(m_offset);
+        // プレイヤーのいる方向へ回転（プレイヤーのY座標を補正しておく）
+        Vector3 playerPoint = new Vector3(playerTr.position.x, playerTr.position.y + m_correctPlayerPoint, playerTr.position.z);
+        Quaternion rot = Quaternion.LookRotation(playerPoint - m_transform.position, Vector3.up);
+        m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
+
+        // 滑らかに移動
+        m_transform.position = Vector3.Lerp(m_transform.position, playerTr.TransformPoint(m_offset), m_moveSpeed * Time.deltaTime);
+
     }
 }

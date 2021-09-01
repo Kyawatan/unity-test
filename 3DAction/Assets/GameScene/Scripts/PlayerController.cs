@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
         // プレイヤーの方向を変える
         float playerAngle = Input.GetAxis("Horizontal") * m_rotateSpeed;
         m_transform.eulerAngles += new Vector3(0f, playerAngle * Time.deltaTime, 0f);
+        //m_transform.rotation = Quaternion.Euler();
 
         // プレイヤーの前進
         m_moveVelocity.z = Input.GetAxis("Vertical") * m_moveSpeed;
@@ -51,7 +52,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public Transform GetPlayerPosition()
+    public Transform GetPlayerTransform()
     {
         return m_transform;
     }
