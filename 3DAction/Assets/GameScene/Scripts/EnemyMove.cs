@@ -13,7 +13,7 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] private float m_dotRange = 0.707f; // 視野
     [SerializeField] private float m_distRange = 7f;    // 見える距離
     private Transform m_transform;
-    private Transform playerTr;
+    private Transform m_playerTr;
     private Vector3 m_toPlayerVec; // 敵からプレイヤーの方向ベクトル
 
     void Start()
@@ -28,8 +28,8 @@ public class EnemyMove : MonoBehaviour
         //m_agent.destination = m_playerController.transform.position;
 
         // プレイヤーの位置情報を取得
-        playerTr = GameDirector.GetInstance().GetPlayerTr();
-        m_toPlayerVec = playerTr.position - m_transform.position;
+        m_playerTr = GameDirector.GetInstance().GetPlayerTr;
+        m_toPlayerVec = m_playerTr.position - m_transform.position;
 
         // プレイヤーが視界に入れば追いかける
         if (IsLook())
@@ -54,7 +54,8 @@ public class EnemyMove : MonoBehaviour
     {
         // プレイヤーのいる方向へ滑らかに回転
         //m_transform.LookAt(playerTr);
-        Quaternion rot = Quaternion.LookRotation(m_toPlayerVec, Vector3.up);
+        Vector3 angle = new Vector3(m_toPlayerVec.x, 0f, m_toPlayerVec.z);
+        Quaternion rot = Quaternion.LookRotation(angle, Vector3.up);
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
 
         // プレイヤーのいる位置へ前進

@@ -31,29 +31,44 @@ public class PlayerController : MonoBehaviour
 
         // プレイヤーの前進
         m_moveVelocity.z = Input.GetAxis("Vertical") * m_moveSpeed;
-        m_characterController.Move(m_transform.TransformDirection(m_moveVelocity) * Time.deltaTime);
+        //m_characterController.Move(m_transform.TransformDirection(m_moveVelocity) * Time.deltaTime);
         //m_transform.position +=  m_transform.forward * m_moveVelocity.z * Time.deltaTime;
+        m_transform.position +=  m_moveVelocity * Time.deltaTime;
     }
 
     private void JumpPlayer()
     {
-        if (m_characterController.isGrounded)
+        if (IsGrounded())
         {
             if (Input.GetButtonDown("Jump"))
             {
                 // ジャンプ
                 m_moveVelocity.y = m_jumpPower;
             }
+            Debug.Log("a");
         }
         else
         {
             // 重力による加速
             m_moveVelocity.y += Physics.gravity.y * Time.deltaTime;
+            Debug.Log("b");
         }
     }
 
-    public Transform GetPlayerTransform()
+    public bool IsGrounded()
     {
-        return m_transform;
+        Ray ray = new Ray(m_transform.position + Vector3.up * 0.1f, Vector3.down);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 0.2f))
+        {
+            if (hit.collider.tag == "Ground") return true;
+            else return false;
+        }
+        else return false;
+    }
+
+    public Transform GetPlayerTransform
+    {
+        get { return m_transform; }
     }
 }

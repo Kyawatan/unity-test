@@ -31,9 +31,9 @@ public class GameDirector : MonoBehaviour
         return ms_instance;
     }
 
-    public Transform GetPlayerTr()
+    public Transform GetPlayerTr
     {
         //プレイヤーの位置情報を渡す
-        return m_playerController.GetPlayerTransform();
+        get { return m_playerController.GetPlayerTransform; }
     }
 }
