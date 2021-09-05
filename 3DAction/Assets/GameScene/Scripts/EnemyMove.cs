@@ -8,18 +8,23 @@ using UnityEngine.AI;
 public class EnemyMove : MonoBehaviour
 {
     //private NavMeshAgent m_agent;
+    
     [SerializeField] private float m_moveSpeed = 1f;
     [SerializeField] private float m_rotateSpeed = 360f;
     [SerializeField] private float m_dotRange = 0.707f; // 視野
     [SerializeField] private float m_distRange = 7f;    // 見える距離
     private Transform m_transform;
     private Transform m_playerTr;
+    private Animator m_animator;
     private Vector3 m_toPlayerVec; // 敵からプレイヤーの方向ベクトル
 
     void Start()
     {
         //m_agent = GetComponent<NavMeshAgent>();
         m_transform = transform;
+        m_animator = GetComponent<Animator>();
+
+        StartCoroutine(RandomMoveCoroutine());
     }
 
     void Update()
@@ -36,6 +41,8 @@ public class EnemyMove : MonoBehaviour
         {
             MoveToPlayer();
         }
+
+        m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
     }
 
     private bool IsLook()
@@ -59,6 +66,18 @@ public class EnemyMove : MonoBehaviour
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
 
         // プレイヤーのいる位置へ前進
-        m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
+        //m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
+    }
+
+    private IEnumerator RandomMoveCoroutine()
+    {
+        while (!IsLook())
+        {
+            yield return new WaitForSeconds(2);
+
+            //2秒毎に方向転換する
+            float randomAngle = Random.Range(90f, 180f);
+            m_transform.rotation = Quaternion.AngleAxis(randomAngle, Vector3.up);
+        }
     }
 }
