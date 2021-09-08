@@ -7,28 +7,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float m_moveSpeed = 3f;    // 移動速度
     [SerializeField] private float m_rotateSpeed = 90f; // 回転速度
     [SerializeField] private float m_jumpPower = 3f;    // ジャンプ力
+    [SerializeField] private Animator m_animator;
 
-    private Animator m_animator;
     private Transform m_transform;
     private Vector3 m_moveVelocity = Vector3.zero;
 
     void Start()
     {
         m_transform = transform;
-        m_animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // プレイヤーの方向を変える
+        // 方向転換
         float playerAngle = Input.GetAxis("Horizontal") * m_rotateSpeed;
         m_transform.eulerAngles += new Vector3(0f, playerAngle * Time.deltaTime, 0f);
 
-        // プレイヤーの前進
+        // 前進
         m_moveVelocity.z = Input.GetAxis("Vertical") * m_moveSpeed;
         m_transform.position += m_transform.TransformDirection(m_moveVelocity) * Time.deltaTime;
 
-        // プレイヤーをジャンプさせる
+        // ジャンプ
         if (IsGrounded())
         {
             m_moveVelocity.y = 0f;
@@ -42,7 +41,7 @@ public class PlayerController : MonoBehaviour
         // 歩行アニメーション
         m_animator.SetFloat("MoveSpeed", new Vector3(m_moveVelocity.x, 0f, m_moveVelocity.z).magnitude);
         
-        // マウス左クリックで攻撃
+        // 攻撃
         if (Input.GetButtonDown("Fire1")) m_animator.SetTrigger("Attack");
     }
 
