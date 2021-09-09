@@ -10,6 +10,5 @@ public class CollisionDetecter : MonoBehaviour
     {
         // 攻撃対象に攻撃が当たった
         m_attack.OnHitAttack(other);
-        Debug.Log(other.gameObject.name + "にHit");
     }
 }

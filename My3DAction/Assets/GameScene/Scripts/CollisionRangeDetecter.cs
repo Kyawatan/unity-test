@@ -6,9 +6,9 @@ public class CollisionRangeDetecter : MonoBehaviour
 {
     [SerializeField] private MobAttack m_attack;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        // 攻撃対象が攻撃範囲に入った
+        // 攻撃対象が攻撃範囲に入っている
         m_attack.OnAttackRangeEnter();
     }
 }

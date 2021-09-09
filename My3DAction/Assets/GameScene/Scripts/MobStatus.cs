@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class MobStatus : MonoBehaviour
 {
-    protected Animator m_animator;
-    protected MOB_STATE m_state;    
+    [SerializeField] protected int m_lifeMax = 3;
 
-    public enum MOB_STATE
+    protected Animator m_animator;
+    protected MOB_STATE m_state;
+    protected int m_life; // 現在のライフ数
+
+    protected enum MOB_STATE
     {
         Normal,     // 通常
         Attack,     // 攻撃中
@@ -15,18 +18,22 @@ public class MobStatus : MonoBehaviour
         Die         // 死亡
     }
 
-    public MOB_STATE GetNowState
-    {
-        get { return m_state; }
-    }
+    public bool IsNomalState => m_state == MOB_STATE.Normal;
 
-    private void Start()
+    protected virtual void Start()
     {
         m_animator = GetComponent<Animator>();
+        m_life = m_lifeMax;
+    }
+
+    protected virtual void OnDie()
+    {
+        // キャラクターが倒れた時の処理
     }
 
     public void GoToNormalState()
     {
+        if (m_state == MOB_STATE.Die) return;
         m_state = MOB_STATE.Normal;
     }
 
@@ -36,8 +43,30 @@ public class MobStatus : MonoBehaviour
         m_animator.SetTrigger("Attack");
     }
 
-    public void Damage()
+    public void GoToDamageState()
     {
+        m_state = MOB_STATE.Damage;
         m_animator.SetTrigger("Damage");
+    }
+
+    public void GoToDieState()
+    {
+        m_state = MOB_STATE.Die;
+        m_animator.SetTrigger("Die");
+    }
+
+    public void Damage(int damage)
+    {
+        m_life -= damage;
+
+        if (m_life > 0)
+        {
+            GoToDamageState();
+        }
+        else
+        {
+            GoToDieState();
+            OnDie();
+        }
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Animator m_animator;
+    [SerializeField] private MobStatus m_status;
     [SerializeField] private float m_moveSpeed = 1f;
     [SerializeField] private float m_rotateSpeed = 360f;
     [SerializeField] private float m_dotRange = 0.707f; // 視野
@@ -25,18 +26,22 @@ public class EnemyController : MonoBehaviour
         // プレイヤーの位置情報を取得
         m_playerTr = GameDirector.GetInstance().GetPlayerTr;
         m_toPlayerVec = m_playerTr.position - m_transform.position;
-        
-        if (IsLook())
+
+        if (m_status.IsNomalState)
         {
-            MoveToPlayer(); // プレイヤーが視界に入れば追いかける
+            if (IsLook()) LookToPlayer();   // プレイヤーが視界に入ればプレイヤーの方を向く
+            else LookToCarrot();            // ニンジンの方を向く
+
+            // 前進
+            m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
+
+            // 歩行アニメーション
+            m_animator.SetBool("isMove", true);
         }
         else
         {
-            MoveToCarrot(); // ニンジンに向かって歩く
+            m_animator.SetBool("isMove", false);
         }
-
-        // 歩行アニメーション
-        m_animator.SetBool("isMove", true);
     }
 
     private bool IsLook()
@@ -51,25 +56,19 @@ public class EnemyController : MonoBehaviour
         else return false;
     }
 
-    private void MoveToPlayer()
+    private void LookToPlayer()
     {
         // プレイヤーのいる方向へ滑らかに回転
         Vector3 angle = new Vector3(m_toPlayerVec.x, 0f, m_toPlayerVec.z);
         Quaternion rot = Quaternion.LookRotation(angle, Vector3.up);
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
-
-        // プレイヤーのいる位置へ前進
-        m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
     }
 
-    private void MoveToCarrot()
+    private void LookToCarrot()
     {
         // ニンジンの方へ回転
-        Vector3 toCarrotVec = new Vector3(0f, 0f, 4f)  - m_transform.position;
+        Vector3 toCarrotVec = Vector3.zero  - m_transform.position;
         Quaternion rot = Quaternion.LookRotation(new Vector3(toCarrotVec.x, 0f, toCarrotVec.z), Vector3.up);
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
-
-        // ニンジンに向かって前進
-        m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
     }
 }

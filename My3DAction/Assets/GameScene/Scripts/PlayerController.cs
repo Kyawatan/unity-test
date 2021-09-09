@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float m_moveSpeed = 3f;    // 移動速度
     [SerializeField] private float m_rotateSpeed = 90f; // 回転速度
     [SerializeField] private float m_jumpPower = 3f;    // ジャンプ力
-    //[SerializeField] private Animator m_animator;
+    [SerializeField] private Animator m_animator;
 
     private Transform m_transform;
     private Vector3 m_moveVelocity = Vector3.zero;
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (m_status.GetNowState == MobStatus.MOB_STATE.Normal)
+        if (m_status.IsNomalState)
         {
             MovePlayer();
             AttackPlayer();
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // 歩行アニメーション
-        //m_animator.SetFloat("MoveSpeed", new Vector3(m_moveVelocity.x, 0f, m_moveVelocity.z).magnitude);
+        m_animator.SetFloat("MoveSpeed", new Vector3(m_moveVelocity.x, 0f, m_moveVelocity.z).magnitude);
     }
 
     private void MovePlayer()

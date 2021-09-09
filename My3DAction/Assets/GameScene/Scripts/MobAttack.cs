@@ -5,6 +5,9 @@ using UnityEngine;
 public class MobAttack : MonoBehaviour
 {
     [SerializeField] private Collider m_attackCollider;
+    [SerializeField] private int m_attackPower = 1; // 攻撃力
+    [SerializeField] private float m_attackCooldown = 0.5f;
+    [SerializeField] private float m_damageCooldown = 0.5f;
 
     private MobStatus m_status;
 
@@ -15,8 +18,8 @@ public class MobAttack : MonoBehaviour
 
     public void OnAttackRangeEnter()
     {
-        // 攻撃対象が攻撃範囲に入ったら攻撃状態へ遷移する
-        m_status.GoToAttackState();
+        // 攻撃対象が攻撃範囲に入った時に呼ばれる
+        if (m_status.IsNomalState) m_status.GoToAttackState();
     }
 
     public void OnAttackStart()
@@ -25,21 +28,29 @@ public class MobAttack : MonoBehaviour
         m_attackCollider.enabled = true;
     }
 
-    /// <summary>
-    /// 攻撃対象に攻撃が当たったときに呼ばれる
-    /// </summary>
-    /// <param name="collider"></param>
     public void OnHitAttack(Collider collider)
     {
-        // 攻撃対象にダメージを与える
+        // 攻撃対象に攻撃が当たった時に呼ばれる
         MobStatus target = collider.GetComponentInChildren<MobStatus>();
-        target.Damage();
+        target.Damage(m_attackPower);
     }
 
     public void OnAttackFinished()
     {
         // 攻撃の終了時に呼ばれる
         m_attackCollider.enabled = false;
+        StartCoroutine(CooldownCoroutine(m_attackCooldown));
+    }
+
+    private void OnDamageFinished()
+    {
+        // ダメージの終了時に呼ばれる
+        StartCoroutine(CooldownCoroutine(m_damageCooldown));
+    }
+
+    private IEnumerator CooldownCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
         m_status.GoToNormalState();
     }
 }

@@ -1,0 +1,28 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemySpawner : MonoBehaviour
+{
+    [SerializeField] private GameObject m_enemyPrefab;
+    [SerializeField] private float m_spawnInterval = 10f;
+    [SerializeField] private float m_spawnDistance = 15f;
+
+    void Start()
+    {
+        // 10秒に1体敵を生成する
+        StartCoroutine(SpawnLoop());
+    }
+
+    private IEnumerator SpawnLoop()
+    {
+        while (true)
+        {
+            // 畑を中心に出現する方向をランダム決定（距離は固定）
+            Vector3 spawnVec = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f) * new Vector3(0f, 0f, m_spawnDistance);
+            Instantiate(m_enemyPrefab, spawnVec, Quaternion.identity);
+
+            yield return new WaitForSeconds(m_spawnInterval);
+        }
+    }
+}
