@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private MobStatus m_status;
     [SerializeField] private float m_moveSpeed = 3f;    // 移動速度
     [SerializeField] private float m_rotateSpeed = 90f; // 回転速度
     [SerializeField] private float m_jumpPower = 3f;    // ジャンプ力
-    [SerializeField] private Animator m_animator;
+    //[SerializeField] private Animator m_animator;
 
     private Transform m_transform;
     private Vector3 m_moveVelocity = Vector3.zero;
@@ -19,6 +20,19 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (m_status.GetNowState == MobStatus.MOB_STATE.Normal)
+        {
+            MovePlayer();
+            AttackPlayer();
+            JumpPlayer();
+        }
+
+        // 歩行アニメーション
+        //m_animator.SetFloat("MoveSpeed", new Vector3(m_moveVelocity.x, 0f, m_moveVelocity.z).magnitude);
+    }
+
+    private void MovePlayer()
+    {
         // 方向転換
         float playerAngle = Input.GetAxis("Horizontal") * m_rotateSpeed;
         m_transform.eulerAngles += new Vector3(0f, playerAngle * Time.deltaTime, 0f);
@@ -26,7 +40,19 @@ public class PlayerController : MonoBehaviour
         // 前進
         m_moveVelocity.z = Input.GetAxis("Vertical") * m_moveSpeed;
         m_transform.position += m_transform.TransformDirection(m_moveVelocity) * Time.deltaTime;
+    }
 
+    private void AttackPlayer()
+    {
+        // 攻撃
+        if (Input.GetButtonDown("Fire1"))
+        {
+            m_status.GoToAttackState();
+        }
+    }
+
+    private void JumpPlayer()
+    {
         // ジャンプ
         if (IsGrounded())
         {
@@ -37,15 +63,9 @@ public class PlayerController : MonoBehaviour
         {
             m_moveVelocity.y += Physics.gravity.y * Time.deltaTime;
         }
-
-        // 歩行アニメーション
-        m_animator.SetFloat("MoveSpeed", new Vector3(m_moveVelocity.x, 0f, m_moveVelocity.z).magnitude);
-        
-        // 攻撃
-        if (Input.GetButtonDown("Fire1")) m_animator.SetTrigger("Attack");
     }
 
-    public bool IsGrounded()
+    private bool IsGrounded()
     {
         Ray ray = new Ray(m_transform.position + Vector3.up * 0.1f, Vector3.down);
         RaycastHit hit;

@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] Animator m_animator;
+    [SerializeField] private Animator m_animator;
     [SerializeField] private float m_moveSpeed = 1f;
     [SerializeField] private float m_rotateSpeed = 360f;
     [SerializeField] private float m_dotRange = 0.707f; // 視野
@@ -25,13 +25,18 @@ public class EnemyController : MonoBehaviour
         // プレイヤーの位置情報を取得
         m_playerTr = GameDirector.GetInstance().GetPlayerTr;
         m_toPlayerVec = m_playerTr.position - m_transform.position;
-
-        // プレイヤーが視界に入れば追いかける
-        bool isLook = IsLook();
-        if (isLook) MoveToPlayer();
+        
+        if (IsLook())
+        {
+            MoveToPlayer(); // プレイヤーが視界に入れば追いかける
+        }
+        else
+        {
+            MoveToCarrot(); // ニンジンに向かって歩く
+        }
 
         // 歩行アニメーション
-        m_animator.SetBool("isMove", isLook);
+        m_animator.SetBool("isMove", true);
     }
 
     private bool IsLook()
@@ -57,8 +62,14 @@ public class EnemyController : MonoBehaviour
         m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
     }
 
-    private void RandomWalk()
+    private void MoveToCarrot()
     {
+        // ニンジンの方へ回転
+        Vector3 toCarrotVec = new Vector3(0f, 0f, 4f)  - m_transform.position;
+        Quaternion rot = Quaternion.LookRotation(new Vector3(toCarrotVec.x, 0f, toCarrotVec.z), Vector3.up);
+        m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
 
+        // ニンジンに向かって前進
+        m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
     }
 }

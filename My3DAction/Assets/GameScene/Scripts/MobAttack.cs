@@ -40,5 +40,6 @@ public class MobAttack : MonoBehaviour
     {
         // 攻撃の終了時に呼ばれる
         m_attackCollider.enabled = false;
+        m_status.GoToNormalState();
     }
 }

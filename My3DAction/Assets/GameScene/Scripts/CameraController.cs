@@ -29,7 +29,8 @@ public class CameraController : MonoBehaviour
 
         // プレイヤーのいる方向へ回転
         Vector3 toPlayerVec = playerTr.position - m_transform.position;
-        Quaternion rot = Quaternion.LookRotation(new Vector3(toPlayerVec.x, 0f, toPlayerVec.z), Vector3.up);
+        //Quaternion rot = Quaternion.LookRotation(new Vector3(toPlayerVec.x, 0f, toPlayerVec.z), Vector3.up);
+        Quaternion rot = Quaternion.LookRotation(new Vector3(toPlayerVec.x, toPlayerVec.y + m_correctPlayerPoint, toPlayerVec.z), Vector3.up);
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
 
         // 滑らかに移動

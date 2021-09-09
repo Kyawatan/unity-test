@@ -8,7 +8,6 @@ public class GameDirector : MonoBehaviour
 
     [SerializeField] private CameraController m_cameraController;
     [SerializeField] private PlayerController m_playerController;
-    [SerializeField] private EnemyController m_enemyController;
 
     private void Awake()
     {
