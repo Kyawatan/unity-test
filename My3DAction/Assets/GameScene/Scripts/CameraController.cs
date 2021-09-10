@@ -19,6 +19,11 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         // プレイヤーを追いかける
+        //MoveToPlayer();
+    }
+
+    private void FixedUpdate()
+    {
         MoveToPlayer();
     }
 

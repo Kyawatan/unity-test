@@ -19,7 +19,8 @@ public class EnemySpawner : MonoBehaviour
         while (true)
         {
             // 畑を中心に出現する方向をランダム決定（距離は固定）
-            Vector3 spawnVec = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f) * new Vector3(0f, 0f, m_spawnDistance);
+            float rand = Random.Range(-120f, 120f);
+            Vector3 spawnVec = Quaternion.Euler(0f, rand, 0f) * new Vector3(0f, 0f, m_spawnDistance);
             Instantiate(m_enemyPrefab, spawnVec, Quaternion.identity);
 
             yield return new WaitForSeconds(m_spawnInterval);
