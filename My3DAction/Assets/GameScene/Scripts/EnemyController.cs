@@ -14,17 +14,19 @@ public class EnemyController : MonoBehaviour
 
     private Transform m_transform;
     private Transform m_playerTr;
-    private Vector3 m_toPlayerVec; // 敵からプレイヤーの方向ベクトル
+    private Vector3 m_targetCarrotVec;  // 目標のニンジンの座標
+    private Vector3 m_toPlayerVec;      // 敵からプレイヤーの方向ベクトル
 
     void Start()
     {
         m_transform = transform;
+        m_targetCarrotVec = GameDirector.GetInstance.GetSetCarrotInfo;
     }
 
     void Update()
     {
         // プレイヤーの位置情報を取得
-        m_playerTr = GameDirector.GetInstance().GetPlayerTr;
+        m_playerTr = GameDirector.GetInstance.GetPlayerTr;
         m_toPlayerVec = m_playerTr.position - m_transform.position;
 
         if (m_status.IsNomalState)
@@ -67,7 +69,7 @@ public class EnemyController : MonoBehaviour
     private void LookToCarrot()
     {
         // ニンジンの方へ回転
-        Vector3 toCarrotVec = Vector3.zero  - m_transform.position;
+        Vector3 toCarrotVec = m_targetCarrotVec - m_transform.position;
         Quaternion rot = Quaternion.LookRotation(new Vector3(toCarrotVec.x, 0f, toCarrotVec.z), Vector3.up);
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
     }

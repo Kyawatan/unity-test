@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour
     private void MoveToPlayer()
     {
         //プレイヤーの位置情報を取得
-        Transform playerTr = GameDirector.GetInstance().GetPlayerTr;
+        Transform playerTr = GameDirector.GetInstance.GetPlayerTr;
 
         // プレイヤーのいる方向へ回転
         Vector3 toPlayerVec = playerTr.position - m_transform.position;

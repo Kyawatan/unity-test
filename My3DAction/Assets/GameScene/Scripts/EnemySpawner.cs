@@ -16,7 +16,8 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnLoop()
     {
-        while (true)
+        // 畑にニンジンが残っていれば生成
+        while (GameDirector.GetInstance.IsExistCarrot)
         {
             // 畑を中心に出現する方向をランダム決定（距離は固定）
             float rand = Random.Range(-120f, 120f);

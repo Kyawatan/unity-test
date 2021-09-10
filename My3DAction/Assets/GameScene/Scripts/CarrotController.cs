@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CarrotController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //private bool m_isExist = true; // 畑に残っていればtrue
+
     void Start()
     {
-        
+        GameDirector.GetInstance.GetSetCarrotInfo = this.transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
         
