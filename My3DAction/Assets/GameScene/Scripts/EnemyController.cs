@@ -15,11 +15,23 @@ public class EnemyController : MonoBehaviour
     private Transform m_transform;
     private Transform m_playerTr;
     private Vector3 m_targetCarrotVec;  // 目標のニンジンの座標
+    private Vector3 m_toTargetCarrotVec; // 敵からニンジンの方向ベクトル
     private Vector3 m_toPlayerVec;      // 敵からプレイヤーの方向ベクトル
+    private ENEMY_MODE m_mode = ENEMY_MODE.AimCarrot;
+
+    private enum ENEMY_MODE
+    {
+        AimPlayer,      // プレイヤーを狙う
+        AimCarrot,      // ニンジンを狙う
+        rakeCarrot,     // ニンジンを盗む
+        Escape          // 逃げる
+    }
 
     void Start()
     {
         m_transform = transform;
+
+        // 目標のニンジンの座標を取得
         m_targetCarrotVec = GameDirector.GetInstance.GetSetCarrotInfo;
     }
 
@@ -27,7 +39,9 @@ public class EnemyController : MonoBehaviour
     {
         // プレイヤーの位置情報を取得
         m_playerTr = GameDirector.GetInstance.GetPlayerTr;
+
         m_toPlayerVec = m_playerTr.position - m_transform.position;
+        m_toTargetCarrotVec = m_targetCarrotVec - m_transform.position;
 
         if (m_status.IsNomalState)
         {
@@ -60,7 +74,7 @@ public class EnemyController : MonoBehaviour
 
     private void LookToPlayer()
     {
-        // プレイヤーのいる方向へ滑らかに回転
+        // プレイヤーのいる方向へ回転
         Vector3 angle = new Vector3(m_toPlayerVec.x, 0f, m_toPlayerVec.z);
         Quaternion rot = Quaternion.LookRotation(angle, Vector3.up);
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
@@ -69,8 +83,8 @@ public class EnemyController : MonoBehaviour
     private void LookToCarrot()
     {
         // ニンジンの方へ回転
-        Vector3 toCarrotVec = m_targetCarrotVec - m_transform.position;
-        Quaternion rot = Quaternion.LookRotation(new Vector3(toCarrotVec.x, 0f, toCarrotVec.z), Vector3.up);
+        Vector3 angle = new Vector3(m_toTargetCarrotVec.x, 0f, m_toTargetCarrotVec.z);
+        Quaternion rot = Quaternion.LookRotation(angle, Vector3.up);
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
     }
 }

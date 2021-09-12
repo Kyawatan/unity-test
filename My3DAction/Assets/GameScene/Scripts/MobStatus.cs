@@ -45,6 +45,7 @@ public class MobStatus : MonoBehaviour
 
     public void GoToDamageState()
     {
+        if (m_state == MOB_STATE.Die) return;
         m_state = MOB_STATE.Damage;
         m_animator.SetTrigger("Damage");
     }
