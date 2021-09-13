@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameDirector : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class GameDirector : MonoBehaviour
         Playing,
         Result,
     }
+
+    public bool IsExistCarrot => m_carrotList.Count != 0;
 
     public static GameDirector GetInstance
     {
@@ -47,10 +50,25 @@ public class GameDirector : MonoBehaviour
         set { m_carrotList.Add(value); }
     }
 
-    public void DestroyCarrot(GameObject carrot)
+    public void RemoveCarrotList(GameObject carrot)
     {
+        // リストからニンジンを削除
+        m_carrotList.Remove(carrot);
         Destroy(carrot);
+        Debug.Log("Destroy.");
+        Debug.Log("残り : " + m_carrotList.Count);
+        if (m_carrotList.Count == 0) GoToResultCroutine();
     }
 
-    public bool IsExistCarrot => m_carrotList.Count != 0;
+    public void GoToResultCroutine()
+    {
+        // リザルト画面へ遷移
+        StartCoroutine(GoToResultSceneCroutine());
+    }
+
+    private IEnumerator GoToResultSceneCroutine()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene("ResultScene");
+    }
 }

@@ -11,11 +11,11 @@ public class CollisionCarrotDetector : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-            m_nowStayTime += Time.deltaTime;
+        m_nowStayTime += Time.deltaTime;
 
         if (m_nowStayTime >= m_stayTime)
         {
-            Destroy(other.gameObject);
+            GameDirector.GetInstance.RemoveCarrotList(other.gameObject);
         }
     }
 

@@ -293,7 +293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &99855613
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -541,7 +540,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &188276693
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -763,7 +761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &388950476
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1032,7 +1029,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &641376432
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1568,7 +1564,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &748516002
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1831,7 +1826,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &936043394
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2793,7 +2787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1225447107
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3059,7 +3052,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1388473357
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3167,7 +3159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1418930287
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3433,7 +3424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1498649370
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3541,7 +3531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1505697711
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3813,14 +3802,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1551042403}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f9540e0d6045ff4a91893984c4676b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_enemyPrefab: {fileID: 4664766613740369511, guid: a3d51d7c6e81992479f55a3f228534db,
     type: 3}
-  m_spawnInterval: 15
+  m_spawnInterval: 20
   m_spawnDistance: 15
 --- !u!4 &1551042405
 Transform:
@@ -3929,7 +3918,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1621865782
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4195,7 +4183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1738002578
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4574,7 +4561,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1822503506
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4719,7 +4705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &2020162590
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6910,7 +6895,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915596b2e115d5648bf81d1c8b42f5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_stayTime: 3
 --- !u!136 &1748008487701411
 CapsuleCollider:
   m_ObjectHideFlags: 0

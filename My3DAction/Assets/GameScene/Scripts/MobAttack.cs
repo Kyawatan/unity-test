@@ -72,9 +72,8 @@ public class MobAttack : MonoBehaviour
             return; // ニンジンを持っていなければreturn
         }
 
-        GameDirector.GetInstance.DestroyCarrot(m_haveCarrot);
+        GameDirector.GetInstance.RemoveCarrotList(m_haveCarrot);
         m_status.GetSetIsHavingCarrot = false;
-        Debug.Log("Destroy.");
     }
 
     private void OnDamageFinished()
