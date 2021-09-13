@@ -16,7 +16,7 @@ public class CollisionDetecter : MonoBehaviour
         else if (other.gameObject.layer == 14)
         {
             // 対象が収穫箱の場合、ニンジンを破棄する
-            m_attack.OnDestroyCarrot();
+            m_attack.OnDestroyCarrot(other);
         }
         else
         {

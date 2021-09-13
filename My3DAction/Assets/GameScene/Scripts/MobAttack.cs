@@ -22,7 +22,7 @@ public class MobAttack : MonoBehaviour
     public void OnAttackRangeEnter()
     {
         // 攻撃対象が攻撃範囲に入った時に呼ばれる
-        if (m_status.IsNomalState) m_status.GoToAttackState();
+        if (m_status.IsNomalState && !GameDirector.GetInstance.IsFinishGame) m_status.GoToAttackState();
     }
 
     public void OnAttackStart()
@@ -34,8 +34,9 @@ public class MobAttack : MonoBehaviour
     public void OnHitAttack(Collider collider)
     {
         // 攻撃対象に攻撃が当たった時に呼ばれる
-        MobStatus target = collider.GetComponentInChildren<MobStatus>();
-        target.Damage(m_attackPower);
+        m_status.OnParticle();
+        MobStatus targetStatus = collider.GetComponentInChildren<MobStatus>();
+        targetStatus.Damage(m_attackPower);
     }
 
     public void OnAttackFinished()
@@ -47,11 +48,7 @@ public class MobAttack : MonoBehaviour
 
     public void OnTakeCarrot(Collider collider)
     {
-        if (m_status.GetSetIsHavingCarrot)
-        {
-            Debug.Log("Already Have.");
-            return; // 既にニンジンを持っていればreturn
-        }
+        if (m_status.GetSetIsHavingCarrot) return; // 既にニンジンを持っていればreturn
 
         m_haveCarrot = collider.gameObject;
         Transform carrotTr = collider.GetComponent<Transform>();
@@ -61,17 +58,13 @@ public class MobAttack : MonoBehaviour
         carrotTr.localScale = new Vector3(3f, 3f, 2f);
 
         m_status.GetSetIsHavingCarrot = true;
-        Debug.Log("Have.");
     }
 
-    public void OnDestroyCarrot()
+    public void OnDestroyCarrot(Collider collider)
     {
-        if (!m_status.GetSetIsHavingCarrot)
-        {
-            Debug.Log("Not have.");
-            return; // ニンジンを持っていなければreturn
-        }
+        if (!m_status.GetSetIsHavingCarrot) return; // ニンジンを持っていなければreturn
 
+        collider.GetComponentInChildren<ParticleController>().OnHitParticle(); // 納品パーティクル再生
         GameDirector.GetInstance.RemoveCarrotList(m_haveCarrot);
         m_status.GetSetIsHavingCarrot = false;
     }

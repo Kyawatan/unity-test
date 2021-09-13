@@ -10,7 +10,7 @@ public class GameDirector : MonoBehaviour
     [SerializeField] private CameraController m_cameraController;
     [SerializeField] private PlayerController m_playerController;
 
-    private GAME_FLOW m_nowFlow = GAME_FLOW.Ready; 
+    private bool m_isFinishGame = false;
     private List<GameObject> m_carrotList = new List<GameObject>(); // ニンジンの情報格納用
 
     private void Awake()
@@ -18,12 +18,7 @@ public class GameDirector : MonoBehaviour
         if (ms_instance == null) ms_instance = this;
     }
 
-    public enum GAME_FLOW
-    {
-        Ready,
-        Playing,
-        Result,
-    }
+    public bool IsFinishGame => m_isFinishGame;
 
     public bool IsExistCarrot => m_carrotList.Count != 0;
 
@@ -31,11 +26,6 @@ public class GameDirector : MonoBehaviour
     {
         //インスタンスを返す
         get { return ms_instance; }
-    }
-
-    public GAME_FLOW GetNowFlow
-    {
-        get { return m_nowFlow; }
     }
 
     public Transform GetPlayerTr
@@ -55,14 +45,16 @@ public class GameDirector : MonoBehaviour
         // リストからニンジンを削除
         m_carrotList.Remove(carrot);
         Destroy(carrot);
-        Debug.Log("Destroy.");
         Debug.Log("残り : " + m_carrotList.Count);
+
         if (m_carrotList.Count == 0) GoToResultCroutine();
     }
 
     public void GoToResultCroutine()
     {
         // リザルト画面へ遷移
+        m_isFinishGame = true;
+        m_playerController.OnFinishAnim();
         StartCoroutine(GoToResultSceneCroutine());
     }
 

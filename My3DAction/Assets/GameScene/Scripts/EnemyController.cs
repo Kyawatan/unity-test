@@ -12,29 +12,18 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float m_rotateSpeed = 360f;
     [SerializeField] private float m_dotRange = 0.707f; // 視野
     [SerializeField] private float m_distRange = 7f;    // 見える距離
+    //[SerializeField] private float m_knockback = 1f; // ノックバック距離
 
     private Transform m_transform;
     private Transform m_playerTr;
     private GameObject m_targetCarrot;
-    private Vector3 m_startVec;
-    private Vector3 m_targetVec;
     private Vector3 m_targetCarrotVec;  // 目標のニンジンの座標
     private Vector3 m_toTargetCarrotVec; // 敵からニンジンの方向ベクトル
     private Vector3 m_toPlayerVec;      // 敵からプレイヤーの方向ベクトル
-    private ENEMY_MODE m_mode = ENEMY_MODE.AimCarrot;
-
-    private enum ENEMY_MODE
-    {
-        AimPlayer,      // プレイヤーを狙う
-        AimCarrot,      // ニンジンを狙う
-        rakeCarrot,     // ニンジンを盗む
-        Escape          // 逃げる
-    }
 
     void Start()
     {
         m_transform = transform;
-        m_startVec = m_transform.position;
 
         // 目標のニンジンを取得
         m_targetCarrot = GameDirector.GetInstance.GetSetCarrotInfo;
@@ -42,9 +31,16 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        if (!m_status.IsNomalState)
+        if (!m_status.IsNomalState || GameDirector.GetInstance.IsFinishGame)
         {
+            if (m_status.IsDamageState)
+            {
+                // ノックバック
+                //m_transform.position = m_transform.TransformPoint(Vector3.back * m_knockback * Time.deltaTime);
+            }
+
             m_animator.SetBool("isMove", false);
+            
             return;
         }
 
@@ -58,7 +54,7 @@ public class EnemyController : MonoBehaviour
         if (IsLook() || m_targetCarrot == null)
         {
             // プレイヤーが視界に入るかニンジンが存在しない場合はプレイヤーの方を向く
-            LookToTarget(m_toPlayerVec);
+            MoveToTarget(m_toPlayerVec);
             if (m_carrotCollider.enabled) m_carrotCollider.enabled = false;
         }
         else
@@ -67,12 +63,9 @@ public class EnemyController : MonoBehaviour
             m_targetCarrotVec = m_targetCarrot.transform.position;
             m_toTargetCarrotVec = m_targetCarrotVec - m_transform.position;
 
-            LookToTarget(m_toTargetCarrotVec);
+            MoveToTarget(m_toTargetCarrotVec);
             if (m_toTargetCarrotVec.magnitude > 0.2 && !m_carrotCollider.enabled) m_carrotCollider.enabled = true;
         }
-
-        // 前進
-        m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
     }
 
     private bool IsLook()
@@ -87,11 +80,14 @@ public class EnemyController : MonoBehaviour
         else return false;
     }
 
-    private void LookToTarget(Vector3 toTargetVec)
+    private void MoveToTarget(Vector3 toTargetVec)
     {
         // ターゲットの方向へ回転
         Vector3 angle = new Vector3(toTargetVec.x, 0f, toTargetVec.z);
         Quaternion rot = Quaternion.LookRotation(angle, Vector3.up);
         m_transform.rotation = Quaternion.RotateTowards(m_transform.rotation, rot, m_rotateSpeed * Time.deltaTime);
+
+        // 前進
+        m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));
     }
 }

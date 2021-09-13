@@ -16,10 +16,12 @@ public class MobStatus : MonoBehaviour
         Normal,     // 通常
         Attack,     // 攻撃中
         Damage,     // ダメージ
-        Die         // 死亡
+        Die,        // 死亡
     }
 
     public bool IsNomalState => m_state == MOB_STATE.Normal;
+
+    public bool IsDamageState => m_state == MOB_STATE.Damage;
 
     protected virtual void Start()
     {
@@ -32,6 +34,11 @@ public class MobStatus : MonoBehaviour
         // キャラクターが倒れた時の処理
     }
 
+    public virtual void OnParticle()
+    {
+        // パーティクル処理
+    }
+
     public void GoToNormalState()
     {
         if (m_state == MOB_STATE.Die) return;
@@ -40,6 +47,7 @@ public class MobStatus : MonoBehaviour
 
     public void GoToAttackState()
     {
+        if (GameDirector.GetInstance.IsFinishGame) return;
         m_state = MOB_STATE.Attack;
         m_animator.SetTrigger("Attack");
     }
@@ -61,7 +69,7 @@ public class MobStatus : MonoBehaviour
     {
         m_life -= damage;
 
-        if (m_life > 0)
+        if (m_life > 0 && !GameDirector.GetInstance.IsFinishGame)
         {
             GoToDamageState();
         }

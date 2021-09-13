@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private MobStatus m_status;
+    [SerializeField] private Animator m_animator;
     [SerializeField] private float m_moveSpeed = 3f;    // 移動速度
     [SerializeField] private float m_rotateSpeed = 90f; // 回転速度
     //[SerializeField] private float m_jumpPower = 3f;    // ジャンプ力
-    [SerializeField] private Animator m_animator;
 
     private Transform m_transform;
     private Rigidbody m_rigidbody;
@@ -22,12 +22,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (m_status.IsNomalState)
-        {
-            //MovePlayer();
-            AttackPlayer();
-            //JumpPlayer();
-        }
+        if (!m_status.IsNomalState || GameDirector.GetInstance.IsFinishGame) return;
+
+        AttackPlayer();
 
         // 歩行アニメーション
         m_animator.SetFloat("MoveSpeed", new Vector3(m_moveVelocity.x, 0f, m_moveVelocity.z).magnitude);
@@ -35,10 +32,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (m_status.IsNomalState)
-        {
-            MovePlayer();
-        }
+        if (!m_status.IsNomalState || GameDirector.GetInstance.IsFinishGame) return;
+
+        MovePlayer();
     }
 
     private void MovePlayer()
@@ -62,6 +58,16 @@ public class PlayerController : MonoBehaviour
         {
             m_status.GoToAttackState();
         }
+    }
+
+    public Transform GetPlayerTransform
+    {
+        get { return m_transform; }
+    }
+
+    public void OnFinishAnim()
+    {
+        m_animator.SetTrigger("Finish");
     }
 
     //private void JumpPlayer()
@@ -95,9 +101,4 @@ public class PlayerController : MonoBehaviour
     //    }
     //    else return false;
     //}
-
-    public Transform GetPlayerTransform
-    {
-        get { return m_transform; }
-    }
 }
