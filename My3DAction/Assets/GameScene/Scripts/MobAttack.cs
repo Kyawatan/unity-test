@@ -9,7 +9,10 @@ public class MobAttack : MonoBehaviour
     [SerializeField] private float m_attackCooldown = 0.5f;
     [SerializeField] private float m_damageCooldown = 0.5f;
 
+    [SerializeField] private Transform m_playerLeftHandTr;
+
     private MobStatus m_status;
+    private GameObject m_haveCarrot;
 
     private void Start()
     {
@@ -40,6 +43,38 @@ public class MobAttack : MonoBehaviour
         // 攻撃の終了時に呼ばれる
         m_attackCollider.enabled = false;
         StartCoroutine(CooldownCoroutine(m_attackCooldown));
+    }
+
+    public void OnTakeCarrot(Collider collider)
+    {
+        if (m_status.GetSetIsHavingCarrot)
+        {
+            Debug.Log("Already Have.");
+            return; // 既にニンジンを持っていればreturn
+        }
+
+        m_haveCarrot = collider.gameObject;
+        Transform carrotTr = collider.GetComponent<Transform>();
+        carrotTr.parent = m_playerLeftHandTr;
+        carrotTr.localPosition = new Vector3(-0.1f, -0.09f, 0f);
+        carrotTr.localEulerAngles = new Vector3(18.17f, -90f, 2f);
+        carrotTr.localScale = new Vector3(3f, 3f, 2f);
+
+        m_status.GetSetIsHavingCarrot = true;
+        Debug.Log("Have.");
+    }
+
+    public void OnDestroyCarrot()
+    {
+        if (!m_status.GetSetIsHavingCarrot)
+        {
+            Debug.Log("Not have.");
+            return; // ニンジンを持っていなければreturn
+        }
+
+        GameDirector.GetInstance.DestroyCarrot(m_haveCarrot);
+        m_status.GetSetIsHavingCarrot = false;
+        Debug.Log("Destroy.");
     }
 
     private void OnDamageFinished()

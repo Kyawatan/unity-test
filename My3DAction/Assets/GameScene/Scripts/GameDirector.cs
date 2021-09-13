@@ -10,7 +10,7 @@ public class GameDirector : MonoBehaviour
     [SerializeField] private PlayerController m_playerController;
 
     private GAME_FLOW m_nowFlow = GAME_FLOW.Ready; 
-    private List<Vector3> m_carrotList = new List<Vector3>(); // ニンジンの情報格納用
+    private List<GameObject> m_carrotList = new List<GameObject>(); // ニンジンの情報格納用
 
     private void Awake()
     {
@@ -41,10 +41,15 @@ public class GameDirector : MonoBehaviour
         get { return m_playerController.GetPlayerTransform; }
     }
 
-    public Vector3 GetSetCarrotInfo
+    public GameObject GetSetCarrotInfo
     {
         get { return m_carrotList[Random.Range(0, m_carrotList.Count)]; }
         set { m_carrotList.Add(value); }
+    }
+
+    public void DestroyCarrot(GameObject carrot)
+    {
+        Destroy(carrot);
     }
 
     public bool IsExistCarrot => m_carrotList.Count != 0;

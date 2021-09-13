@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Animator m_animator;
     [SerializeField] private MobStatus m_status;
+    [SerializeField] private Collider m_carrotCollider;
     [SerializeField] private float m_moveSpeed = 1f;
     [SerializeField] private float m_rotateSpeed = 360f;
     [SerializeField] private float m_dotRange = 0.707f; // 視野
@@ -14,6 +15,7 @@ public class EnemyController : MonoBehaviour
 
     private Transform m_transform;
     private Transform m_playerTr;
+    private Vector3 m_startVec;
     private Vector3 m_targetCarrotVec;  // 目標のニンジンの座標
     private Vector3 m_toTargetCarrotVec; // 敵からニンジンの方向ベクトル
     private Vector3 m_toPlayerVec;      // 敵からプレイヤーの方向ベクトル
@@ -30,9 +32,10 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         m_transform = transform;
+        m_startVec = m_transform.position;
 
         // 目標のニンジンの座標を取得
-        m_targetCarrotVec = GameDirector.GetInstance.GetSetCarrotInfo;
+        m_targetCarrotVec = GameDirector.GetInstance.GetSetCarrotInfo.transform.position;
     }
 
     void Update()
@@ -45,8 +48,16 @@ public class EnemyController : MonoBehaviour
 
         if (m_status.IsNomalState)
         {
-            if (IsLook()) LookToPlayer();   // プレイヤーが視界に入ればプレイヤーの方を向く
-            else LookToCarrot();            // ニンジンの方を向く
+            if (IsLook())
+            {
+                LookToPlayer();   // プレイヤーが視界に入ればプレイヤーの方を向く
+                if (m_carrotCollider.enabled) m_carrotCollider.enabled = false;
+            }
+            else
+            {
+                LookToCarrot();            // ニンジンの方を向く
+                if (m_toTargetCarrotVec.magnitude > 0.2 && !m_carrotCollider.enabled) m_carrotCollider.enabled = true;
+            }
 
             // 前進
             m_transform.position = m_transform.TransformPoint(new Vector3(0f, 0f, m_moveSpeed * Time.deltaTime));

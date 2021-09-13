@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -19,8 +20,8 @@ TagManager:
   - Enemy
   - EnemyAttack
   - Carrot
-  - 
-  - 
+  - EnemyTakeCarrot
+  - Box
   - 
   - 
   - 

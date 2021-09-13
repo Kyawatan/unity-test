@@ -9,6 +9,7 @@ public class MobStatus : MonoBehaviour
     protected Animator m_animator;
     protected MOB_STATE m_state;
     protected int m_life; // 現在のライフ数
+    protected bool m_isHavingCarrot = false;
 
     protected enum MOB_STATE
     {
@@ -69,5 +70,11 @@ public class MobStatus : MonoBehaviour
             GoToDieState();
             OnDie();
         }
+    }
+
+    public bool GetSetIsHavingCarrot
+    {
+        get { return m_isHavingCarrot; }
+        set { m_isHavingCarrot = value; }
     }
 }
