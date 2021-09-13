@@ -17,13 +17,13 @@ public class PlayerStatus : MobStatus
     protected override void OnDie()
     {
         base.OnDie();
-        GameDirector.GetInstance.GoToResultCroutine();
+        GameDirector.GetInstance.GoToResultCroutine("bad");
     }
 
     public override void OnParticle()
     {
         base.OnParticle();
-        m_particle.OnHitParticle(); // 攻撃パーティクルを再生
+        m_particle.OnHitParticle(); // 攻撃パーティクル再生
     }
 
     private void Update()

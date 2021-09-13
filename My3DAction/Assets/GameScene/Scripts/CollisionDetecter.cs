@@ -17,6 +17,7 @@ public class CollisionDetecter : MonoBehaviour
         {
             // 対象が収穫箱の場合、ニンジンを破棄する
             m_attack.OnDestroyCarrot(other);
+            GameDirector.GetInstance.GetSetGetCarrotCount = 1;
         }
         else
         {

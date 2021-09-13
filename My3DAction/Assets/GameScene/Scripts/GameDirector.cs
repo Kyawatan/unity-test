@@ -11,6 +11,7 @@ public class GameDirector : MonoBehaviour
     [SerializeField] private PlayerController m_playerController;
 
     private bool m_isFinishGame = false;
+    private int m_getCarrotCount = 0; // 納品したニンジンの数
     private List<GameObject> m_carrotList = new List<GameObject>(); // ニンジンの情報格納用
 
     private void Awake()
@@ -34,6 +35,12 @@ public class GameDirector : MonoBehaviour
         get { return m_playerController.GetPlayerTransform; }
     }
 
+    public int GetSetGetCarrotCount
+    {
+        get { return m_getCarrotCount;  }
+        set { m_getCarrotCount += value; }
+    }
+
     public GameObject GetSetCarrotInfo
     {
         get { return m_carrotList[Random.Range(0, m_carrotList.Count)]; }
@@ -47,20 +54,22 @@ public class GameDirector : MonoBehaviour
         Destroy(carrot);
         Debug.Log("残り : " + m_carrotList.Count);
 
-        if (m_carrotList.Count == 0) GoToResultCroutine();
+        if (m_carrotList.Count == 0) GoToResultCroutine("true");
     }
 
-    public void GoToResultCroutine()
+    public void GoToResultCroutine(string end)
     {
         // リザルト画面へ遷移
         m_isFinishGame = true;
-        m_playerController.OnFinishAnim();
-        StartCoroutine(GoToResultSceneCroutine());
+        if (end == "true") m_playerController.OnFinishAnim();
+        StartCoroutine(GoToResultSceneCroutine(end));
     }
 
-    private IEnumerator GoToResultSceneCroutine()
+    private IEnumerator GoToResultSceneCroutine(string end)
     {
         yield return new WaitForSeconds(3);
-        SceneManager.LoadScene("ResultScene");
+
+        if (end == "true") SceneManager.LoadScene("TrueEndScene");
+        else SceneManager.LoadScene("BadEndScene");
     }
 }

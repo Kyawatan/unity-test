@@ -6,7 +6,7 @@ public class ParticleController : MonoBehaviour
 {
     private ParticleSystem m_particle;
 
-    public void Awake()
+    public void Start()
     {
         m_particle = GetComponent<ParticleSystem>();
     }
