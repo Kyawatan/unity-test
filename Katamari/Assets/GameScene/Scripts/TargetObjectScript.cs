@@ -24,8 +24,12 @@ public class TargetObjectScript : MonoBehaviour
         if (!m_isFollowable) return;
 
         m_sphereTr = DirectorScript.GetInstance.GetSphereTr;
+
         //transform.position = m_sphereTr.position + m_targetLocalPos;
-        transform.position = m_sphereTr.position + m_sphereTr.InverseTransformPoint(m_sphereTr.position + m_targetLocalPos);
+        //transform.position = m_sphereTr.InverseTransformPoint(m_sphereTr.position + m_targetLocalPos);
+
+        // 物体のローカル座標をワールド座標に変換
+        transform.position = m_sphereTr.TransformPoint(m_targetLocalPos);
         transform.rotation = DirectorScript.GetInstance.GetRotateDirection * transform.rotation;
     }
 }
