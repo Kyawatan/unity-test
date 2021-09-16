@@ -6,16 +6,21 @@ public class OriginalSphereScript : MonoBehaviour
 {
     void Update()
     {
-        transform.position += Vector3.forward * DirectorScript.GetInstance.GetMoveSpeed;
-        transform.rotation = Quaternion.Euler(transform.eulerAngles + Vector3.right * DirectorScript.GetInstance.GetRotateSpeed);
+        transform.position += DirectorScript.GetInstance.GetMoveDirection;
+        transform.rotation = DirectorScript.GetInstance.GetRotateDirection * transform.rotation;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         // 球に物を引っ付ける
         if (collision.gameObject.layer == 8)
         {
-            collision.gameObject.GetComponent<TargetObjectScript>().GetSetIsFollowable = true;
+            var collider = collision.gameObject.GetComponent<TargetObjectScript>();
+
+            if (collider != null)
+            {
+                collider.OnIsFollowable(collision.transform);
+            }
         }
     }
 }

@@ -6,6 +6,6 @@ public class CameraScript : MonoBehaviour
 {
     void Update()
     {
-        this.transform.position += Vector3.forward * DirectorScript.GetInstance.GetMoveSpeed;
+        this.transform.position += DirectorScript.GetInstance.GetMoveDirection;
     }
 }

@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class TargetObjectScript : MonoBehaviour
 {
+    private Transform m_sphereTr;
+    private Vector3 m_targetLocalPos;
+    private Vector3 m_targetLocalRot;
     private bool m_isFollowable = false;
 
-    public bool GetSetIsFollowable
+    public void OnIsFollowable(Transform targetTr)
     {
-        get { return m_isFollowable; }
-        set { m_isFollowable = value; }
+        if (m_isFollowable) return;
+
+        // 衝突時の球から見た物体の座標を保持しておく
+        m_sphereTr = DirectorScript.GetInstance.GetSphereTr;
+        m_targetLocalPos = m_sphereTr.InverseTransformPoint(targetTr.position);
+        m_isFollowable = true;
     }
 
     void Update()
     {
-        if (!GetSetIsFollowable) return;
+        if (!m_isFollowable) return;
 
-        Vector3 spherePos = DirectorScript.GetInstance.GetSpherePos;
-        Vector3 toSphereVec = spherePos - transform.position;
-        Vector3 angle = new Vector3(toSphereVec.x, 0f, toSphereVec.z);
-        Quaternion rot = Quaternion.LookRotation(angle, Vector3.forward);
-
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, DirectorScript.GetInstance.GetRotateSpeed);
-        transform.position += Vector3.forward * DirectorScript.GetInstance.GetMoveSpeed;
+        m_sphereTr = DirectorScript.GetInstance.GetSphereTr;
+        //transform.position = m_sphereTr.position + m_targetLocalPos;
+        transform.position = m_sphereTr.position + m_sphereTr.InverseTransformPoint(m_sphereTr.position + m_targetLocalPos);
+        transform.rotation = DirectorScript.GetInstance.GetRotateDirection * transform.rotation;
     }
 }

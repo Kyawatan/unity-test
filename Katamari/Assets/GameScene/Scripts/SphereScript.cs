@@ -15,7 +15,7 @@ public class SphereScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        m_rigidbody.AddForce(Vector3.forward * DirectorScript.GetInstance.GetMoveSpeed * m_speed, ForceMode.Force);
+        m_rigidbody.AddForce(DirectorScript.GetInstance.GetMoveDirection * m_speed, ForceMode.Force);
     }
 
     private void OnCollisionEnter(Collision collision)

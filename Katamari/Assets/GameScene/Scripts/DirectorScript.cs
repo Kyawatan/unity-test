@@ -6,7 +6,7 @@ public class DirectorScript : MonoBehaviour
 {
     [SerializeField] private Transform m_originalSphereTr;
     [SerializeField] private float m_moveSpeed = 10f;
-    [SerializeField] private float m_rotateSpeed = 90f;
+    [SerializeField] private float m_rotateSpeed = 180f;
 
     private static DirectorScript ms_instance;
 
@@ -20,18 +20,18 @@ public class DirectorScript : MonoBehaviour
         get { return ms_instance; }
     }
 
-    public Vector3 GetSpherePos
+    public Transform GetSphereTr
     {
-        get { return m_originalSphereTr.position; }
+        get { return m_originalSphereTr; }
     }
 
-    public float GetMoveSpeed
+    public Vector3 GetMoveDirection
     {
-        get { return Input.GetAxis("Vertical") * m_moveSpeed * Time.deltaTime; }
+        get { return new Vector3(Input.GetAxis("Horizontal"), 0f ,Input.GetAxis("Vertical")) * m_moveSpeed * Time.deltaTime; }
     }
 
-    public float GetRotateSpeed
+    public Quaternion GetRotateDirection
     {
-        get { return Input.GetAxis("Vertical") * m_rotateSpeed * Time.deltaTime; }
+        get { return Quaternion.AngleAxis(m_rotateSpeed * Time.deltaTime, new Vector3(Input.GetAxis("Vertical"), 0f, -Input.GetAxis("Horizontal"))); }
     }
 }
