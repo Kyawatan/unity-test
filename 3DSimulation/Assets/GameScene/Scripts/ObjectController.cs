@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
-    private Vector3 m_thisLocalPos; // 地球から見たオブジェクトの座標
-
-    void Start()
+    protected virtual void Awake()
     {
-        // ゲームスタート時の地球から見たオブジェクトの座標を保持
-        Transform earthTr = GameDirector.GetInstance.GetEarthTr;
-        m_thisLocalPos = earthTr.InverseTransformPoint(transform.position);
+        TurnCenter();
     }
 
-    void Update()
+    /// <summary>
+    /// 足元を地球の中心方向へ回転
+    /// </summary>
+    protected void TurnCenter()
     {
-        // 移動
-        Transform earthTr = GameDirector.GetInstance.GetEarthTr;
-        transform.position = earthTr.TransformPoint(m_thisLocalPos);
+        Ray ray = new Ray(transform.position, -transform.up);
+        RaycastHit hit;
 
-        // 回転
-        Quaternion rot = GameDirector.GetInstance.GetRotationAngle;
-        transform.rotation = rot * transform.rotation;
+        if (Physics.Raycast(ray, out hit, 0.05f))
+        {
+            if (hit.collider.tag == "Earth")
+            {
+                transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+            }
+        }
+
+        Debug.DrawRay(ray.origin, ray.direction, Color.red);
     }
 }

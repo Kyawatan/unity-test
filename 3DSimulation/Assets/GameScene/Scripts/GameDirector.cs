@@ -23,8 +23,7 @@ public class GameDirector : MonoBehaviour
         get { return m_earth.GetEarthTr; }
     }
 
-    public Quaternion GetRotationAngle
-    {
-        get { return m_earth.GetEarthRot; }
-    }
+    public bool OnChest => Time.time >= 30f;
+
+    public bool OnNewRabbit => Time.time % 60f >= 1f;
 }
