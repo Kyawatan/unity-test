@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class ChestGenerator : MonoBehaviour
 {
+    [SerializeField] private GameObject m_chest;
+    [SerializeField] private float m_intervalTime = 30f; // チェストの出現間隔（s）
+
     private float m_time = 0f;
-    private float m_enableTime = 10f;
 
     void Update()
     {
-        // 一定時間ごとに、地球の裏側（プレイヤーから見えない位置）でチェストを生成
+        if (m_chest.activeSelf) return;
 
-        if (GameDirector.GetInstance.OnChest) gameObject.SetActive(true);
+        m_time += Time.deltaTime;
 
-        if (gameObject.activeSelf)
+        if (m_time >= m_intervalTime)
         {
-            m_time += Time.deltaTime;
-            if (m_time == m_enableTime) gameObject.SetActive(false);
+            m_chest.SetActive(true);
+            m_time = 0f;
         }
     }
 }
