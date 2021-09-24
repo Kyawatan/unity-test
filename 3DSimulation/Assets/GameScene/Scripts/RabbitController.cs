@@ -22,13 +22,10 @@ public class RabbitController : ObjectController
 
     public float SetRandTime => Random.Range(m_randMin, m_randMax);
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
-    }
+        base.Start();
 
-    private void Start()
-    {
         m_carrot = transform.GetChild(3).gameObject; // ニンジンのオブジェクト取得
         m_animator = GetComponent<Animator>();
         m_randTime = SetRandTime;
@@ -45,7 +42,7 @@ public class RabbitController : ObjectController
         {
             if (m_isRun)
             {
-                transform.position += transform.up * Physics.gravity.y * Time.deltaTime; // Y座標補正
+                //transform.position += transform.up * Physics.gravity.y * Time.deltaTime; // Y座標補正
                 m_animator.SetInteger("TurnLR", 2);
                 m_isRun = false;
             }

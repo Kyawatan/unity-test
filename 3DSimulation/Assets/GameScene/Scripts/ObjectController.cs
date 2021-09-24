@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         TurnCenter();
     }
@@ -14,17 +14,21 @@ public class ObjectController : MonoBehaviour
     /// </summary>
     protected void TurnCenter()
     {
-        Ray ray = new Ray(transform.position, -transform.up);
-        RaycastHit hit;
+        // 地球とオブジェクトとの垂直ベクトル
+        Vector3 perpVec = GameDirector.GetInstance.GetEarthTr.position - transform.position;
+        transform.rotation = Quaternion.FromToRotation(-transform.up, perpVec) * transform.rotation;
 
-        if (Physics.Raycast(ray, out hit, 0.05f))
-        {
-            if (hit.collider.tag == "Earth")
-            {
-                transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
-            }
-        }
+        //Ray ray = new Ray(transform.position, -transform.up);
+        //RaycastHit hit;
 
-        Debug.DrawRay(ray.origin, ray.direction, Color.red);
+        //if (Physics.Raycast(ray, out hit, 0.05f))
+        //{
+        //    if (hit.collider.tag == "Earth")
+        //    {
+        //        transform.rotation = Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation;
+        //    }
+        //}
+
+        //Debug.DrawRay(ray.origin, ray.direction, Color.red);
     }
 }
